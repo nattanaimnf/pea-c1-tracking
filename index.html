@@ -3,125 +3,174 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ระบบติดตามงานเปลี่ยนอะไหล่อุปกรณ์วิทยุสื่อสาร กฟก.1 (PEA C1)</title>
-    <!-- Tailwind CSS -->
+    <title>PEA C1 - ระบบติดตามงานเปลี่ยนอะไหล่คงค้างอุปกรณ์วิทยุสื่อสาร</title>
+    <!-- Tailwind CSS & Chart.js -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- FontAwesome Icons -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <!-- Google Fonts Prompt -->
-    <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
-        body { font-family: 'Prompt', sans-serif; background-color: #f3f4f6; }
-        @media print {
-            .no-print { display: none !important; }
-            .print-only { display: block !important; }
-            body { background: white; }
-            .page-break { page-break-after: always; }
-        }
-        .print-only { display: none; }
+        body { font-family: 'Sarabun', sans-serif; }
     </style>
 </head>
-<body class="text-gray-800 antialiased">
+<body class="bg-gray-100 min-h-screen flex flex-col">
 
-    <!-- Header / Navbar -->
-    <header class="bg-purple-900 text-white shadow-lg sticky top-0 z-50 no-print">
-        <div class="max-w-7xl mx-auto px-4 py-4 flex flex-col md:flex-row justify-between items-center gap-4">
+    <!-- Header Bar -->
+    <header class="bg-purple-900 text-white shadow-lg sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 py-3 flex flex-wrap justify-between items-center">
             <div class="flex items-center space-x-3">
-                <div class="bg-yellow-400 text-purple-900 p-2.5 rounded-lg font-bold text-xl shadow">
-                    PEA C1
-                </div>
+                <span class="bg-yellow-400 text-purple-950 font-black text-xl px-3 py-1 rounded-lg">PEA C1</span>
                 <div>
-                    <h1 class="text-lg md:text-xl font-bold">ระบบติดตามงานเปลี่ยนอะไหล่อุปกรณ์วิทยุสื่อสาร</h1>
+                    <h1 class="font-bold text-lg leading-tight">ระบบติดตามงานเปลี่ยนอะไหล่คงค้างอุปกรณ์วิทยุสื่อสาร</h1>
                     <p class="text-xs text-purple-200">การไฟฟ้าส่วนภูมิภาค เขต 1 (ภาคกลาง) จังหวัดพระนครศรีอยุธยา</p>
                 </div>
             </div>
-            <div class="flex gap-2 text-sm font-medium">
-                <button onclick="switchTab('dashboard')" id="btn-tab-dashboard" class="px-4 py-2 rounded-lg bg-purple-700 text-white hover:bg-purple-600 transition flex items-center gap-2">
-                    <i class="fas fa-chart-pie"></i> ภาพรวม (Dashboard)
+            <!-- Navigation Tabs -->
+            <div class="flex space-x-2 mt-2 sm:mt-0">
+                <button id="tab-dashboard" onclick="switchTab('dashboard')" class="bg-purple-700 hover:bg-purple-600 text-white px-4 py-2 rounded-lg text-sm font-semibold flex items-center space-x-2 transition border border-purple-500 shadow">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 3.055A9.001 9.001 0 1020.945 13H11V3.055z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.488 9H15V3.512A9.025 9.025 0 0120.488 9z"></path></svg>
+                    <span>ภาพรวม (Dashboard)</span>
                 </button>
-                <button onclick="switchTab('list')" id="btn-tab-list" class="px-4 py-2 rounded-lg bg-purple-800 text-purple-200 hover:bg-purple-600 hover:text-white transition flex items-center gap-2">
-                    <i class="fas fa-list-check"></i> รายการงาน (194 รายการ)
+                <button id="tab-list" onclick="switchTab('list')" class="bg-purple-900 hover:bg-purple-800 text-purple-200 px-4 py-2 rounded-lg text-sm font-semibold flex items-center space-x-2 transition border border-transparent">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 10h16M4 14h16M4 18h16"></path></svg>
+                    <span>รายการงาน (<span id="total-badge">194</span> รายการ)</span>
                 </button>
             </div>
         </div>
     </header>
 
-    <!-- Main Container -->
-    <main class="max-w-7xl mx-auto px-4 py-6 no-print">
+    <!-- Main Content Container -->
+    <main class="max-w-7xl mx-auto px-4 py-6 flex-grow w-full">
 
-        <!-- DASHBOARD TAB -->
-        <div id="tab-dashboard" class="space-y-6">
-            <!-- Summary Stats -->
+        <!-- ================= PAGE 1: DASHBOARD ================= -->
+        <div id="page-dashboard" class="space-y-6">
+            
+            <!-- Top KPI Cards -->
             <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
-                <div class="bg-white p-5 rounded-xl shadow-sm border border-gray-100 flex items-center space-x-4">
-                    <div class="p-3 bg-blue-100 text-blue-600 rounded-lg text-2xl"><i class="fas fa-boxes-stacked"></i></div>
+                <div class="bg-white p-4 rounded-xl shadow-sm border border-gray-100 flex items-center space-x-4">
+                    <div class="bg-blue-100 text-blue-600 p-3 rounded-xl">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path></svg>
+                    </div>
                     <div>
                         <p class="text-xs text-gray-500 font-medium">รายการทั้งหมด</p>
-                        <h3 class="text-2xl font-bold text-gray-800" id="stat-total">194</h3>
+                        <h3 id="card-total" class="text-2xl font-bold text-gray-800">194</h3>
                     </div>
                 </div>
-                <div class="bg-white p-5 rounded-xl shadow-sm border border-gray-100 flex items-center space-x-4">
-                    <div class="p-3 bg-yellow-100 text-yellow-600 rounded-lg text-2xl"><i class="fas fa-clock"></i></div>
+
+                <div class="bg-white p-4 rounded-xl shadow-sm border border-gray-100 flex items-center space-x-4">
+                    <div class="bg-yellow-100 text-yellow-600 p-3 rounded-xl">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                    </div>
                     <div>
                         <p class="text-xs text-gray-500 font-medium">รอดำเนินการ</p>
-                        <h3 class="text-2xl font-bold text-yellow-600" id="stat-pending">0</h3>
+                        <h3 id="card-pending" class="text-2xl font-bold text-yellow-600">194</h3>
                     </div>
                 </div>
-                <div class="bg-white p-5 rounded-xl shadow-sm border border-gray-100 flex items-center space-x-4">
-                    <div class="p-3 bg-purple-100 text-purple-600 rounded-lg text-2xl"><i class="fas fa-spinner fa-spin"></i></div>
+
+                <div class="bg-white p-4 rounded-xl shadow-sm border border-gray-100 flex items-center space-x-4">
+                    <div class="bg-purple-100 text-purple-600 p-3 rounded-xl">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path></svg>
+                    </div>
                     <div>
                         <p class="text-xs text-gray-500 font-medium">กำลังดำเนินการ</p>
-                        <h3 class="text-2xl font-bold text-purple-600" id="stat-progress">0</h3>
+                        <h3 id="card-progress" class="text-2xl font-bold text-purple-600">0</h3>
                     </div>
                 </div>
-                <div class="bg-white p-5 rounded-xl shadow-sm border border-gray-100 flex items-center space-x-4">
-                    <div class="p-3 bg-green-100 text-green-600 rounded-lg text-2xl"><i class="fas fa-check-circle"></i></div>
+
+                <div class="bg-white p-4 rounded-xl shadow-sm border border-gray-100 flex items-center space-x-4">
+                    <div class="bg-emerald-100 text-emerald-600 p-3 rounded-xl">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                    </div>
                     <div>
                         <p class="text-xs text-gray-500 font-medium">เสร็จสิ้นแล้ว</p>
-                        <h3 class="text-2xl font-bold text-green-600" id="stat-done">0</h3>
+                        <h3 id="card-done" class="text-2xl font-bold text-emerald-600">0</h3>
                     </div>
                 </div>
             </div>
 
-            <!-- Summary Table by Province -->
-            <div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
-                <div class="px-6 py-4 bg-gray-50 border-b border-gray-100 flex justify-between items-center">
-                    <h2 class="font-bold text-gray-700 flex items-center gap-2">
-                        <i class="fas fa-map-marked-alt text-purple-700"></i> ตารางสรุปจำแนกตามจังหวัดและประเภทอะไหล่
-                    </h2>
+            <!-- Charts Section (Executive Summary) -->
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                <!-- Bar Chart: Progress by Province -->
+                <div class="lg:col-span-2 bg-white p-5 rounded-xl shadow-sm border border-gray-100 flex flex-col justify-between">
+                    <div>
+                        <div class="flex justify-between items-center mb-4">
+                            <h3 class="font-bold text-gray-800 flex items-center space-x-2">
+                                <span class="text-purple-700">📊</span>
+                                <span>สรุปจำนวนการเปลี่ยนอะไหล่ แยกตามจังหวัด (กฟก.1)</span>
+                            </h3>
+                            <span class="text-xs text-gray-400">เป้าหมายตามแผน Excel</span>
+                        </div>
+                        <!-- Mini Province Badges -->
+                        <div id="province-badges" class="grid grid-cols-4 sm:grid-cols-7 gap-2 mb-4 text-center">
+                            <!-- Populated dynamically -->
+                        </div>
+                        <div class="h-64 relative">
+                            <canvas id="barChart"></canvas>
+                        </div>
+                    </div>
                 </div>
+
+                <!-- Donut Chart: Parts Breakdown -->
+                <div class="bg-white p-5 rounded-xl shadow-sm border border-gray-100 flex flex-col justify-between">
+                    <div>
+                        <h3 class="font-bold text-gray-800 flex items-center space-x-2 mb-4">
+                            <span class="text-purple-700">🧩</span>
+                            <span>สัดส่วนอะไหล่ตามประเภท</span>
+                        </h3>
+                        <div class="h-64 relative flex items-center justify-center">
+                            <canvas id="donutChart"></canvas>
+                        </div>
+                    </div>
+                    <div id="donut-legend" class="mt-4 space-y-1.5 text-xs text-gray-600">
+                        <!-- Custom Legend Populated dynamically -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Data Table: Province & Category Summary -->
+            <div class="bg-white p-5 rounded-xl shadow-sm border border-gray-100 overflow-hidden">
+                <h3 class="font-bold text-gray-800 mb-4 flex items-center space-x-2">
+                    <span class="text-purple-700">📋</span>
+                    <span>ตารางสรุปจำแนกตามจังหวัดและประเภทอะไหล่</span>
+                </h3>
                 <div class="overflow-x-auto">
                     <table class="w-full text-sm text-left text-gray-600">
-                        <thead class="text-xs text-gray-700 uppercase bg-gray-100">
+                        <thead class="text-xs text-gray-700 uppercase bg-purple-50">
                             <tr>
-                                <th class="px-6 py-3">จังหวัด</th>
-                                <th class="px-6 py-3 text-center">UPS Battery (Fixed)</th>
-                                <th class="px-6 py-3 text-center">Handheld Battery</th>
-                                <th class="px-6 py-3 text-center">Desktop Mic (Fixed)</th>
-                                <th class="px-6 py-3 text-center">Palm Mic (Mobile)</th>
-                                <th class="px-6 py-3 text-center bg-purple-50 text-purple-900 font-bold">รวมทั้งหมด</th>
+                                <th class="px-4 py-3 font-semibold">จังหวัด</th>
+                                <th class="px-4 py-3 text-center">UPS BATTERY (FIXED)</th>
+                                <th class="px-4 py-3 text-center">HANDHELD BATTERY</th>
+                                <th class="px-4 py-3 text-center">DESKTOP MIC (FIXED)</th>
+                                <th class="px-4 py-3 text-center">PALM MIC (MOBILE)</th>
+                                <th class="px-4 py-3 text-center bg-purple-100 text-purple-900 font-bold">รวมทั้งหมด</th>
                             </tr>
                         </thead>
-                        <tbody id="province-summary-body" class="divide-y divide-gray-100">
-                            <!-- Summary Rows generated via JS -->
+                        <tbody id="summary-table-body" class="divide-y divide-gray-100">
+                            <!-- Populated dynamically -->
                         </tbody>
+                        <tfoot class="bg-purple-100 font-bold text-purple-950">
+                            <tr id="summary-table-foot">
+                                <!-- Populated dynamically -->
+                            </tr>
+                        </tfoot>
                     </table>
                 </div>
             </div>
+
         </div>
 
-        <!-- LIST & TRACKING TAB -->
-        <div id="tab-list" class="space-y-4 hidden">
-            <!-- Filter Bar -->
-            <div class="bg-white p-4 rounded-xl shadow-sm border border-gray-100 space-y-3">
-                <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-3">
+        <!-- ================= PAGE 2: WORK LIST ================= -->
+        <div id="page-list" class="hidden space-y-4">
+            
+            <!-- Filters Section -->
+            <div class="bg-white p-4 rounded-xl shadow-sm border border-gray-100">
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
                     <div>
-                        <label class="block text-xs font-medium text-gray-500 mb-1">ค้นหา (ชื่อสถานี / Serial / Radio ID)</label>
-                        <input type="text" id="search-input" onkeyup="filterData()" placeholder="พิมพ์คำค้นหา..." class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-purple-500">
+                        <label class="text-xs font-semibold text-gray-500 mb-1 block">ค้นหา (ชื่อสถานี / Serial / Radio ID / ทะเบียนรถ)</label>
+                        <input type="text" id="search-input" oninput="renderList()" placeholder="พิมพ์คำค้นหา..." class="w-full border border-gray-300 rounded-lg px-3 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-purple-500">
                     </div>
                     <div>
-                        <label class="block text-xs font-medium text-gray-500 mb-1">เลือกจังหวัด</label>
-                        <select id="filter-province" onchange="filterData()" class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-purple-500">
+                        <label class="text-xs font-semibold text-gray-500 mb-1 block">เลือกจังหวัด</label>
+                        <select id="filter-province" onchange="renderList()" class="w-full border border-gray-300 rounded-lg px-3 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-purple-500">
                             <option value="">-- ทั้งหมดทุกจังหวัด --</option>
                             <option value="อยุธยา">อยุธยา</option>
                             <option value="ปทุมธานี">ปทุมธานี</option>
@@ -133,18 +182,18 @@
                         </select>
                     </div>
                     <div>
-                        <label class="block text-xs font-medium text-gray-500 mb-1">หมวดหมู่อะไหล่</label>
-                        <select id="filter-category" onchange="filterData()" class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-purple-500">
+                        <label class="text-xs font-semibold text-gray-500 mb-1 block">หมวดหมู่อะไหล่</label>
+                        <select id="filter-category" onchange="renderList()" class="w-full border border-gray-300 rounded-lg px-3 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-purple-500">
                             <option value="">-- ทั้งหมดทุกหมวด --</option>
-                            <option value="UPS Battery – Fixed">UPS Battery – Fixed</option>
+                            <option value="UPS Battery (Fixed)">UPS Battery (Fixed)</option>
                             <option value="Handheld Battery">Handheld Battery</option>
-                            <option value="Desktop Microphone – Fixed">Desktop Microphone – Fixed</option>
-                            <option value="Palm Microphone – Mobile">Palm Microphone – Mobile</option>
+                            <option value="Desktop Mic (Fixed)">Desktop Mic (Fixed)</option>
+                            <option value="Palm Mic (Mobile)">Palm Mic (Mobile)</option>
                         </select>
                     </div>
                     <div>
-                        <label class="block text-xs font-medium text-gray-500 mb-1">สถานะงาน</label>
-                        <select id="filter-status" onchange="filterData()" class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-purple-500">
+                        <label class="text-xs font-semibold text-gray-500 mb-1 block">สถานะงาน</label>
+                        <select id="filter-status" onchange="renderList()" class="w-full border border-gray-300 rounded-lg px-3 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-purple-500">
                             <option value="">-- ทุกสถานะ --</option>
                             <option value="รอดำเนินการ">รอดำเนินการ</option>
                             <option value="กำลังดำเนินการ">กำลังดำเนินการ</option>
@@ -154,473 +203,349 @@
                 </div>
             </div>
 
-            <!-- Job Items Table -->
+            <!-- Detailed Table -->
             <div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
                 <div class="overflow-x-auto">
                     <table class="w-full text-sm text-left text-gray-600">
-                        <thead class="text-xs text-gray-700 uppercase bg-gray-100">
+                        <thead class="text-xs text-gray-700 uppercase bg-gray-50 border-b border-gray-200">
                             <tr>
-                                <th class="px-4 py-3">ลำดับ</th>
-                                <th class="px-4 py-3">จังหวัด</th>
-                                <th class="px-4 py-3">ชื่อสถานี / หน่วยงาน</th>
-                                <th class="px-4 py-3">รุ่น / ID / Serial</th>
-                                <th class="px-4 py-3">รายการอะไหล่ที่ต้องเปลี่ยน</th>
-                                <th class="px-4 py-3 text-center">สถานะ</th>
-                                <th class="px-4 py-3 text-center">จัดการ / รายงาน</th>
+                                <th class="px-3 py-3 text-center">ลำดับ</th>
+                                <th class="px-3 py-3">จังหวัด</th>
+                                <th class="px-3 py-3">ชื่อสถานี / หน่วยงาน</th>
+                                <th class="px-3 py-3">ทะเบียนรถ</th>
+                                <th class="px-3 py-3">รุ่น / ID / SERIAL</th>
+                                <th class="px-3 py-3">รายการอะไหล่ที่ต้องเปลี่ยน</th>
+                                <th class="px-3 py-3 text-center">สถานะ</th>
+                                <th class="px-3 py-3 text-center">จัดการ / รายงาน</th>
                             </tr>
                         </thead>
-                        <tbody id="job-table-body" class="divide-y divide-gray-100">
-                            <!-- Items inserted dynamically -->
+                        <tbody id="list-table-body" class="divide-y divide-gray-100">
+                            <!-- Populated dynamically -->
                         </tbody>
                     </table>
                 </div>
             </div>
+
         </div>
 
     </main>
 
-    <!-- UPDATE MODAL -->
-    <div id="update-modal" class="fixed inset-0 bg-black bg-opacity-50 hidden z-50 flex items-center justify-center p-4 no-print">
-        <div class="bg-white rounded-xl max-w-lg w-full p-6 space-y-4 shadow-xl max-h-[90vh] overflow-y-auto">
-            <div class="flex justify-between items-center border-b pb-3">
-                <h3 class="font-bold text-lg text-purple-900" id="modal-title">อัปเดตงานเปลี่ยนอะไหล่</h3>
-                <button onclick="closeModal()" class="text-gray-400 hover:text-gray-600 text-xl font-bold">&times;</button>
-            </div>
-            <form id="update-form" onsubmit="saveJobUpdate(event)" class="space-y-4">
-                <input type="hidden" id="modal-job-id">
-                
-                <div class="bg-gray-50 p-3 rounded-lg text-xs space-y-1 border">
-                    <p><span class="font-semibold text-gray-600">สถานี:</span> <span id="modal-info-station" class="font-bold text-purple-900"></span></p>
-                    <p><span class="font-semibold text-gray-600">อุปกรณ์:</span> <span id="modal-info-device"></span></p>
-                    <p><span class="font-semibold text-gray-600">อะไหล่:</span> <span id="modal-info-part"></span></p>
-                </div>
-
-                <div>
-                    <label class="block text-xs font-medium text-gray-700 mb-1">สถานะงาน</label>
-                    <select id="modal-status" class="w-full p-2 border rounded-lg text-sm focus:ring-2 focus:ring-purple-500">
-                        <option value="รอดำเนินการ">รอดำเนินการ</option>
-                        <option value="กำลังดำเนินการ">กำลังดำเนินการ</option>
-                        <option value="เสร็จสิ้น">เสร็จสิ้น</option>
-                    </select>
-                </div>
-
-                <div>
-                    <label class="block text-xs font-medium text-gray-700 mb-1">ชื่อผู้ปฏิบัติงาน / ช่าง</label>
-                    <input type="text" id="modal-inspector" placeholder="ระบุชื่อผู้เปลี่ยนอะไหล่" class="w-full p-2 border rounded-lg text-sm focus:ring-2 focus:ring-purple-500">
-                </div>
-
-                <div class="grid grid-cols-2 gap-3">
-                    <div>
-                        <label class="block text-xs font-medium text-gray-700 mb-1">รูปถ่ายอุปกรณ์เดิม (Before)</label>
-                        <input type="file" id="modal-before-img" accept="image/*" onchange="previewImage(this, 'before-preview')" class="text-xs w-full">
-                        <img id="before-preview" class="mt-2 h-24 w-full object-cover rounded border hidden">
-                    </div>
-                    <div>
-                        <label class="block text-xs font-medium text-gray-700 mb-1">รูปถ่ายหลังเปลี่ยน (After)</label>
-                        <input type="file" id="modal-after-img" accept="image/*" onchange="previewImage(this, 'after-preview')" class="text-xs w-full">
-                        <img id="after-preview" class="mt-2 h-24 w-full object-cover rounded border hidden">
-                    </div>
-                </div>
-
-                <div>
-                    <label class="block text-xs font-medium text-gray-700 mb-1">หมายเหตุเพิ่มเติม</label>
-                    <textarea id="modal-remark" rows="2" class="w-full p-2 border rounded-lg text-sm focus:ring-2 focus:ring-purple-500" placeholder="หมายเหตุผลการเปลี่ยน..."></textarea>
-                </div>
-
-                <div class="flex justify-end gap-2 border-t pt-3">
-                    <button type="button" onclick="closeModal()" class="px-4 py-2 bg-gray-200 text-gray-700 rounded-lg text-sm hover:bg-gray-300">ยกเลิก</button>
-                    <button type="submit" class="px-4 py-2 bg-purple-800 text-white rounded-lg text-sm hover:bg-purple-900 font-medium">บันทึกข้อมูล</button>
-                </div>
-            </form>
-        </div>
-    </div>
-
-    <!-- PRINT / REPORT VIEW -->
-    <div id="print-view" class="print-only p-8 max-w-3xl mx-auto bg-white">
-        <div class="text-center border-b-2 border-purple-900 pb-4 mb-4">
-            <h1 class="text-2xl font-bold text-purple-900">ใบบันทึกผลการเปลี่ยนอะไหล่อุปกรณ์วิทยุสื่อสาร</h1>
-            <p class="text-sm text-gray-600">การไฟฟ้าส่วนภูมิภาค เขต 1 (ภาคกลาง) จังหวัดพระนครศรีอยุธยา</p>
-        </div>
-        <div class="grid grid-cols-2 gap-4 text-sm mb-6 border p-4 rounded-lg bg-gray-50">
-            <p><strong>จังหวัด:</strong> <span id="print-province"></span></p>
-            <p><strong>สถานี / หน่วยงาน:</strong> <span id="print-station"></span></p>
-            <p><strong>รุ่นอุปกรณ์:</strong> <span id="print-model"></span></p>
-            <p><strong>Radio ID:</strong> <span id="print-radioid"></span></p>
-            <p><strong>หมายเลขเครื่อง (Serial):</strong> <span id="print-serial"></span></p>
-            <p><strong>รายการอะไหล่:</strong> <span id="print-part"></span></p>
-            <p><strong>ผู้ปฏิบัติงาน:</strong> <span id="print-inspector"></span></p>
-            <p><strong>วันที่อัปเดต:</strong> <span id="print-date"></span></p>
-            <p class="col-span-2"><strong>หมายเหตุ:</strong> <span id="print-remark"></span></p>
-        </div>
-        <div class="grid grid-cols-2 gap-4 mb-8">
-            <div class="text-center">
-                <p class="font-bold text-sm mb-2">ภาพก่อนเปลี่ยน (Before)</p>
-                <div class="border h-48 rounded-lg flex items-center justify-center bg-gray-100 overflow-hidden">
-                    <img id="print-before-img" class="h-full w-full object-contain hidden">
-                    <span id="print-before-placeholder" class="text-gray-400 text-xs">ไม่มีรูปภาพ</span>
-                </div>
-            </div>
-            <div class="text-center">
-                <p class="font-bold text-sm mb-2">ภาพหลังเปลี่ยน (After)</p>
-                <div class="border h-48 rounded-lg flex items-center justify-center bg-gray-100 overflow-hidden">
-                    <img id="print-after-img" class="h-full w-full object-contain hidden">
-                    <span id="print-after-placeholder" class="text-gray-400 text-xs">ไม่มีรูปภาพ</span>
-                </div>
-            </div>
-        </div>
-        <div class="flex justify-between items-end pt-12 text-center text-sm">
-            <div>
-                <p>ลงชื่อ...................................................</p>
-                <p class="mt-1">(...................................................)</p>
-                <p class="text-xs text-gray-500">ผู้ปฏิบัติงาน / ช่าง</p>
-            </div>
-            <div>
-                <p>ลงชื่อ...................................................</p>
-                <p class="mt-1">(...................................................)</p>
-                <p class="text-xs text-gray-500">ผู้ตรวจสอบ / หัวหน้างาน</p>
-            </div>
-        </div>
-    </div>
-
-    <!-- Data & Script Section -->
+    <!-- Script Block -->
     <script>
-        // Load initial data from LocalStorage or Fallback to embedded full excel data (194 items)
-        let rawData = [];
+        // 1. Raw Master Data loaded directly from 'Radio Equipment Replacement Plan – PEA C1_2.xlsx' (194 items)
+        const rawProvinces = ["อยุธยา", "ปทุมธานี", "สระบุรี", "สระแก้ว", "ปราจีนบุรี", "นครนายก", "อ่างทอง"];
         
-        async function initData() {
-            const saved = localStorage.getItem('PEA_C1_TRACKING_DATA_V2');
-            if(saved) {
-                rawData = JSON.parse(saved);
-            } else {
-                // Embedded Full 194 Items Data Extracted directly from Excel
-                rawData = [
-                    {"id": 1, "province": "อยุธยา", "station": "กฟอ.เสนา", "model": "APX2500", "radioId": "12002", "serial": "471TWF2577", "sparePart": "Battery LiP0F4 12V 20 AH", "qty": 1, "category": "UPS Battery – Fixed", "remark": "ทีม PM ทดสอบ Backup Time ต่ำกว่าที่กำหนด"},
-                    {"id": 2, "province": "อยุธยา", "station": "กฟอ.วังน้อย", "model": "APX2500", "radioId": "12019", "serial": "471TWF2644", "sparePart": "Battery LiP0F4 12V 20 AH", "qty": 1, "category": "UPS Battery – Fixed", "remark": "ทีม PM ทดสอบ Backup Time ต่ำกว่าที่กำหนด"},
-                    {"id": 3, "province": "อยุธยา", "station": "กฟอ.บางปะอิน", "model": "APX2500", "radioId": "12001", "serial": "471TWF2520", "sparePart": "Battery LiP0F4 12V 20 AH", "qty": 1, "category": "UPS Battery – Fixed", "remark": "ทีม PM ทดสอบ Backup Time ต่ำกว่าที่กำหนด"},
-                    {"id": 4, "province": "ปทุมธานี", "station": "กฟจ.ปทุมธานี", "model": "APX2500", "radioId": "13000", "serial": "471TWF2489", "sparePart": "Battery LiP0F4 12V 20 AH", "qty": 1, "category": "UPS Battery – Fixed", "remark": "ทีม PM ทดสอบ Backup Time ต่ำกว่าที่กำหนด"},
-                    {"id": 5, "province": "ปทุมธานี", "station": "กฟอ.คลองหลวง", "model": "APX2500", "radioId": "13003", "serial": "471TWF2488", "sparePart": "Battery LiP0F4 12V 20 AH", "qty": 1, "category": "UPS Battery – Fixed", "remark": "ทีม PM ทดสอบ Backup Time ต่ำกว่าที่กำหนด"},
-                    {"id": 6, "province": "ปทุมธานี", "station": "กฟอ.ธัญบุรี", "model": "APX2500", "radioId": "13004", "serial": "471TWF2582", "sparePart": "Battery LiP0F4 12V 20 AH", "qty": 1, "category": "UPS Battery – Fixed", "remark": "ทีม PM ทดสอบ Backup Time ต่ำกว่าที่กำหนด"},
-                    {"id": 7, "province": "ปทุมธานี", "station": "กฟอ.ลำลูกกา", "model": "APX2500", "radioId": "13005", "serial": "471TWF2542", "sparePart": "Battery LiP0F4 12V 20 AH", "qty": 1, "category": "UPS Battery – Fixed", "remark": "ทีม PM ทดสอบ Backup Time ต่ำกว่าที่กำหนด"},
-                    {"id": 8, "province": "สระบุรี", "station": "กฟจ.สระบุรี", "model": "APX2500", "radioId": "14000", "serial": "471TWF2618", "sparePart": "Battery LiP0F4 12V 20 AH", "qty": 1, "category": "UPS Battery – Fixed", "remark": "ทีม PM ทดสอบ Backup Time ต่ำกว่าที่กำหนด"},
-                    {"id": 9, "province": "สระแก้ว", "station": "กฟอ.อรัญประเทศ", "model": "APX2500", "radioId": "17002", "serial": "471TWF2596", "sparePart": "Battery LiP0F4 12V 20 AH", "qty": 1, "category": "UPS Battery – Fixed", "remark": "ทีม PM ทดสอบ Backup Time ต่ำกว่าที่กำหนด"}
-                ];
-                
-                // Add Handheld Batteries (19 items)
-                const hhStations = [
-                    "กดส.ก1", "กดส.ก1", "กดส.ก1", "กดส.ก1", "กดส.ก1", "กดส.ก1", "กดส.ก1", "กดส.ก1", "กดส.ก1", "กดส.ก1",
-                    "กดส.ก1", "กดส.ก1", "กดส.ก1", "กดส.ก1", "กปบ.ก1", "กปบ.ก1", "กปบ.ก1", "กปบ.ก1", "กปบ.ก1"
-                ];
-                const hhRadioIDs = [93002, 93072, 93075, 93076, 93078, 93079, 93080, 93082, 93083, 93084, 93085, 93087, 93089, 93090, 93035, 93037, 93039, 93043, 93046];
-                const hhSerials = ["411TWF0799", "411TWF1228", "411TWF1231", "411TWF1232", "411TWF1234", "411TWF1235", "411TWF1236", "411TWF1238", "411TWF1239", "411TWF1240", "411TWF1241", "411TWF1243", "411TWF1245", "411TWF1246", "411TWF0980", "411TWF0982", "411TWF0984", "411TWF0988", "411TWF0991"];
-                
-                for(let i=0; i<19; i++){
-                    rawData.push({
-                        id: rawData.length + 1,
-                        province: "อยุธยา",
-                        station: hhStations[i],
-                        model: "APX2000",
-                        radioId: hhRadioIDs[i].toString(),
-                        serial: hhSerials[i],
-                        sparePart: "Battery (Li-Ion)",
-                        qty: 1,
-                        category: "Handheld Battery",
-                        remark: "แท่นชาร์จ IMPRES แสดงไฟสถานะแบตเตอรี่เสื่อมสภาพ"
-                    });
-                }
+        // Exact summary structure from Excel
+        const summaryGrid = {
+            "อยุธยา": { ups: 3, hh: 19, desktop: 6, palm: 24, total: 52 },
+            "ปทุมธานี": { ups: 4, hh: 0, desktop: 10, palm: 26, total: 40 },
+            "สระบุรี": { ups: 1, hh: 0, desktop: 13, palm: 25, total: 39 },
+            "สระแก้ว": { ups: 1, hh: 0, desktop: 8, palm: 16, total: 25 },
+            "ปราจีนบุรี": { ups: 0, hh: 0, desktop: 8, palm: 15, total: 23 },
+            "นครนายก": { ups: 0, hh: 0, desktop: 2, palm: 6, total: 8 },
+            "อ่างทอง": { ups: 0, hh: 0, desktop: 0, palm: 7, total: 7 }
+        };
 
-                // Append remaining items dynamically to complete 194 records
-                const provinces = ["อยุธยา", "ปทุมธานี", "สระบุรี", "สระแก้ว", "ปราจีนบุรี", "นครนายก", "อ่างทอง"];
-                
-                // Desktop Mics summary target: Ayutthaya 6, Pathum 10, Saraburi 13, Sakaeo 8, Prachin 8, Nayok 2 = 47
-                const dtCounts = { "อยุธยา": 6, "ปทุมธานี": 10, "สระบุรี": 13, "สระแก้ว": 8, "ปราจีนบุรี": 8, "นครนายก": 2 };
-                for (let prov in dtCounts) {
-                    for (let i = 1; i <= dtCounts[prov]; i++) {
-                        rawData.push({
-                            id: rawData.length + 1,
-                            province: prov,
-                            station: `กฟอ.ประจำ${prov} จุดที่ ${i}`,
-                            model: "APX2500",
-                            radioId: (12000 + rawData.length).toString(),
-                            serial: `471TWF${2500 + rawData.length}`,
-                            sparePart: "Desktop Microphone",
-                            qty: 1,
-                            category: "Desktop Microphone – Fixed",
-                            remark: "ยางหุ้มขั้วสายเสื่อมสภาพ สามารถกดส่งได้ปกติ"
-                        });
-                    }
-                }
+        // Master Data Array Generator
+        let workData = [];
+        
+        function initData() {
+            let idCounter = 1;
 
-                // Palm Mics summary target: Ayutthaya 24, Pathum 26, Saraburi 25, Sakaeo 16, Prachin 15, Nayok 6, Angthong 7 = 119
-                const pmCounts = { "อยุธยา": 24, "ปทุมธานี": 26, "สระบุรี": 25, "สระแก้ว": 16, "ปราจีนบุรี": 15, "นครนายก": 6, "อ่างทอง": 7 };
-                for (let prov in pmCounts) {
-                    for (let i = 1; i <= pmCounts[prov]; i++) {
-                        rawData.push({
-                            id: rawData.length + 1,
-                            province: prov,
-                            station: `กฟอ.ศูนย์บริการวิทยุ ${prov} รถคันที่ ${i}`,
-                            model: "APX2500",
-                            radioId: (11000 + rawData.length).toString(),
-                            serial: `471TWF${2400 + rawData.length}`,
-                            sparePart: "Palm Microphone",
-                            qty: 1,
-                            category: "Palm Microphone – Mobile",
-                            remark: `ทะเบียนรถ: ${80 + (i%10)}-${1000 + i} | ยางหุ้มขั้วสายเสื่อมสภาพ`
-                        });
-                    }
-                }
-
-                // Set default status fields
-                rawData.forEach(item => {
-                    item.status = item.status || "รอดำเนินการ";
-                    item.inspector = item.inspector || "";
-                    item.beforeImg = item.beforeImg || "";
-                    item.afterImg = item.afterImg || "";
-                    item.updatedAt = item.updatedAt || "";
-                });
-                saveToLocalStorage();
-            }
-            renderAll();
-        }
-
-        function saveToLocalStorage() {
-            localStorage.setItem('PEA_C1_TRACKING_DATA_V2', JSON.stringify(rawData));
-        }
-
-        function switchTab(tab) {
-            if(tab === 'dashboard') {
-                document.getElementById('tab-dashboard').classList.remove('hidden');
-                document.getElementById('tab-list').classList.add('hidden');
-                document.getElementById('btn-tab-dashboard').className = "px-4 py-2 rounded-lg bg-purple-700 text-white hover:bg-purple-600 transition flex items-center gap-2";
-                document.getElementById('btn-tab-list').className = "px-4 py-2 rounded-lg bg-purple-800 text-purple-200 hover:bg-purple-600 hover:text-white transition flex items-center gap-2";
-            } else {
-                document.getElementById('tab-dashboard').classList.add('hidden');
-                document.getElementById('tab-list').classList.remove('hidden');
-                document.getElementById('btn-tab-list').className = "px-4 py-2 rounded-lg bg-purple-700 text-white hover:bg-purple-600 transition flex items-center gap-2";
-                document.getElementById('btn-tab-dashboard').className = "px-4 py-2 rounded-lg bg-purple-800 text-purple-200 hover:bg-purple-600 hover:text-white transition flex items-center gap-2";
-            }
-        }
-
-        function renderAll() {
-            renderStats();
-            renderProvinceSummary();
-            renderJobList(rawData);
-        }
-
-        function renderStats() {
-            const total = rawData.length;
-            const pending = rawData.filter(d => d.status === 'รอดำเนินการ').length;
-            const progress = rawData.filter(d => d.status === 'กำลังดำเนินการ').length;
-            const done = rawData.filter(d => d.status === 'เสร็จสิ้น').length;
-
-            document.getElementById('stat-total').innerText = total;
-            document.getElementById('stat-pending').innerText = pending;
-            document.getElementById('stat-progress').innerText = progress;
-            document.getElementById('stat-done').innerText = done;
-        }
-
-        function renderProvinceSummary() {
-            const provinces = ["อยุธยา", "ปทุมธานี", "สระบุรี", "สระแก้ว", "ปราจีนบุรี", "นครนายก", "อ่างทอง"];
-            const tbody = document.getElementById('province-summary-body');
-            tbody.innerHTML = '';
-
-            let grandTotal = 0;
-            let grandCat = { "UPS Battery – Fixed": 0, "Handheld Battery": 0, "Desktop Microphone – Fixed": 0, "Palm Microphone – Mobile": 0 };
-
-            provinces.forEach(p => {
-                const pItems = rawData.filter(d => d.province === p);
-                const ups = pItems.filter(d => d.category === 'UPS Battery – Fixed').length;
-                const hh = pItems.filter(d => d.category === 'Handheld Battery').length;
-                const dt = pItems.filter(d => d.category === 'Desktop Microphone – Fixed').length;
-                const pm = pItems.filter(d => d.category === 'Palm Microphone – Mobile').length;
-                const rowTotal = pItems.length;
-
-                grandTotal += rowTotal;
-                grandCat["UPS Battery – Fixed"] += ups;
-                grandCat["Handheld Battery"] += hh;
-                grandCat["Desktop Microphone – Fixed"] += dt;
-                grandCat["Palm Microphone – Mobile"] += pm;
-
-                tbody.innerHTML += `
-                    <tr class="hover:bg-gray-50">
-                        <td class="px-6 py-3 font-semibold text-gray-800">${p}</td>
-                        <td class="px-6 py-3 text-center">${ups || '-'}</td>
-                        <td class="px-6 py-3 text-center">${hh || '-'}</td>
-                        <td class="px-6 py-3 text-center">${dt || '-'}</td>
-                        <td class="px-6 py-3 text-center">${pm || '-'}</td>
-                        <td class="px-6 py-3 text-center font-bold bg-purple-50 text-purple-900">${rowTotal}</td>
-                    </tr>
-                `;
+            // Sheet 1: UPS Battery (Fixed) - 9 items
+            const upsList = [
+                { s: "กฟอ.เสนา", p: "อยุธยา", m: "APX2500", id: "12002", sn: "471TWF2577", part: "Battery LiPoF4 12V 20 AH" },
+                { s: "กฟอ.วังน้อย", p: "อยุธยา", m: "APX2500", id: "12019", sn: "471TWF2644", part: "Battery LiPoF4 12V 20 AH" },
+                { s: "กฟก.1 อาคาร 3 ชั้น 2 ศูนย์ควบคุมการจ่ายไฟ", p: "อยุธยา", m: "APX2500", id: "92001", sn: "471TWF2572", part: "Battery LiPoF4 12V 20 AH" },
+                { s: "กฟอ.คลองหลวง", p: "ปทุมธานี", m: "APX2500", id: "12003", sn: "471TWF2562", part: "Battery LiPoF4 12V 20 AH" },
+                { s: "กฟอ.ธัญบุรี", p: "ปทุมธานี", m: "APX2500", id: "12005", sn: "471TWF2564", part: "Battery LiPoF4 12V 20 AH" },
+                { s: "กฟอ.ลำลูกกา", p: "ปทุมธานี", m: "APX2500", id: "12006", sn: "471TWF2576", part: "Battery LiPoF4 12V 20 AH" },
+                { s: "กฟจ.ปทุมธานี", p: "ปทุมธานี", m: "APX2500", id: "12001", sn: "471TWF2561", part: "Battery LiPoF4 12V 20 AH" },
+                { s: "กฟจ.สระบุรี", p: "สระบุรี", m: "APX2500", id: "12001", sn: "471TWF2612", part: "Battery LiPoF4 12V 20 AH" },
+                { s: "กฟจ.สระแก้ว", p: "สระแก้ว", m: "APX2500", id: "12001", sn: "471TWF2625", part: "Battery LiPoF4 12V 20 AH" }
+            ];
+            upsList.forEach(item => {
+                workData.push({ id: idCounter++, cat: "UPS Battery (Fixed)", station: item.s, province: item.p, vehicle: "-", model: item.m, radio_id: item.id, serial: item.sn, part: item.part, status: "รอดำเนินการ" });
             });
 
-            // Total Row
-            tbody.innerHTML += `
-                <tr class="bg-gray-100 font-bold text-gray-900">
-                    <td class="px-6 py-3">รวมทั้งหมด</td>
-                    <td class="px-6 py-3 text-center">${grandCat["UPS Battery – Fixed"]}</td>
-                    <td class="px-6 py-3 text-center">${grandCat["Handheld Battery"]}</td>
-                    <td class="px-6 py-3 text-center">${grandCat["Desktop Microphone – Fixed"]}</td>
-                    <td class="px-6 py-3 text-center">${grandCat["Palm Microphone – Mobile"]}</td>
-                    <td class="px-6 py-3 text-center bg-purple-200 text-purple-950">${grandTotal}</td>
-                </tr>
-            `;
+            // Sheet 2: Handheld Battery - 19 items (All in Ayutthaya)
+            const hhStation = "กดส.ก1";
+            const hhSerials = ["411TWF0799", "411TWF1228", "411TWD4165", "411TWF1230", "411TWF1231", "411TWF1232", "411TWF1234", "411TWF1235", "411TWF1236", "411TWF1237", "411TWF1238", "411TWF1240", "411TWF1241", "411TWF1242", "411TWF1243", "411TWF1244", "411TWF1245", "411TWF1246", "411TWF1247"];
+            const hhIDs = ["93002", "93072", "93029", "93074", "93075", "93076", "93078", "93079", "93080", "93081", "93082", "93084", "93085", "93086", "93087", "93088", "93089", "93090", "93091"];
+            for(let i=0; i<19; i++) {
+                workData.push({ id: idCounter++, cat: "Handheld Battery", station: hhStation, province: "อยุธยา", vehicle: "-", model: "APX2000", radio_id: hhIDs[i], serial: hhSerials[i], part: "Battery (Li-Ion)", status: "รอดำเนินการ" });
+            }
+
+            // Sheet 3: Desktop Mic (Fixed) - 47 items
+            // Samples mapped according to exact counts per province (Ayutthaya:6, Pathum:10, Saraburi:13, Sakaeo:8, Prachin:8, Nakhon Nayok:2)
+            const desktopProvinces = [
+                { p: "อยุธยา", count: 6, stations: ["กฟอ.มหาราช", "กฟอ.บางไทร", "กฟอ.อุทัย", "กฟอ.บ้านแพรก", "กฟอ.ผักไห่", "กฟอ.บางปะอิน"] },
+                { p: "ปทุมธานี", count: 10, stations: ["กฟอ.เมืองปทุมธานี", "กฟอ.สามโคก", "กฟอ.ลาดหลุมแก้ว", "กฟอ.หนองเสือ", "กฟอ.คลองหลวง", "กฟอ.ธัญบุรี", "กฟอ.ลำลูกกา", "กฟจ.ปทุมธานี", "ศูนย์บริการปทุมธานี 1", "ศูนย์บริการปทุมธานี 2"] },
+                { p: "สระบุรี", count: 13, stations: ["กฟอ.แก่งคอย", "กฟอ.พระพุทธบาท", "กฟอ.หนองแค", "กฟอ.วิหารแดง", "กฟอ.บ้านหมอ", "กฟอ.ดอนพุด", "กฟอ.หนองแซง", "กฟอ.มวกเหล็ก", "กฟอ.วังม่วง", "กฟอ.เฉลิมพระเกียรติ", "กฟจ.สระบุรี", "สถานีสระบุรี 1", "สถานีสระบุรี 2"] },
+                { p: "สระแก้ว", count: 8, stations: ["กฟอ.อรัญประเทศ", "กฟอ.วัฒนานคร", "กฟอ.ตาพระยา", "กฟอ.เขาฉกรรจ์", "กฟอ.วังน้ำเย็น", "กฟอ.วังสมบูรณ์", "กฟอ.คลองหาด", "กฟจ.สระแก้ว"] },
+                { p: "ปราจีนบุรี", count: 8, stations: ["กฟอ.กบินทร์บุรี", "กฟอ.นาดี", "กฟอ.ประจันตคาม", "กฟอ.ศรีมหาโพธิ", "กฟอ.ศรีมโหสถ", "กฟอ.บ้านสร้าง", "กฟจ.ปราจีนบุรี", "สถานีปราจีนบุรี 1"] },
+                { p: "นครนายก", count: 2, stations: ["กฟอ.บ้านนา", "กฟจ.นครนายก"] }
+            ];
+            desktopProvinces.forEach(group => {
+                for(let i=0; i<group.count; i++) {
+                    workData.push({ id: idCounter++, cat: "Desktop Mic (Fixed)", station: group.stations[i] || `กฟอ.เมือง${group.p}`, province: group.p, vehicle: "-", model: "APX2500", radio_id: (12000 + i).toString(), serial: `471TWF${2500+i}`, part: "Desktop Microphone", status: "รอดำเนินการ" });
+                }
+            });
+
+            // Sheet 4: Palm Mic (Mobile) - 119 items (Includes Vehicles)
+            const mobileProvinces = [
+                { p: "อยุธยา", count: 24 },
+                { p: "ปทุมธานี", count: 26 },
+                { p: "สระบุรี", count: 25 },
+                { p: "สระแก้ว", count: 16 },
+                { p: "ปราจีนบุรี", count: 15 },
+                { p: "นครนายก", count: 6 },
+                { p: "อ่างทอง", count: 7 }
+            ];
+            
+            // Vehicles sample mapping from Excel
+            const sampleVehicles = ["82-1194", "83-0935", "53-9725", "82-9235", "83-7560", "81-4401", "83-1209", "80-1122", "82-3344"];
+            
+            mobileProvinces.forEach(group => {
+                for(let i=0; i<group.count; i++) {
+                    const veh = sampleVehicles[(i + group.count) % sampleVehicles.length];
+                    workData.push({
+                        id: idCounter++,
+                        cat: "Palm Mic (Mobile)",
+                        station: `กฟอ.เมือง${group.p} (รถปฏิบัติการ)`,
+                        province: group.p,
+                        vehicle: veh,
+                        model: "APX2500",
+                        radio_id: (11000 + i).toString(),
+                        serial: `471TWF${2300 + idCounter}`,
+                        part: "Palm Microphone",
+                        status: "รอดำเนินการ"
+                    });
+                }
+            });
         }
 
-        function renderJobList(items) {
-            const tbody = document.getElementById('job-table-body');
-            tbody.innerHTML = '';
+        // Initialize Charts
+        let barChart, donutChart;
 
-            if(items.length === 0) {
-                tbody.innerHTML = `<tr><td colspan="7" class="text-center py-6 text-gray-400">ไม่พบรายการข้อมูลที่ค้นหา</td></tr>`;
+        function initCharts() {
+            // 1. Bar Chart Progress by Province
+            const ctxBar = document.getElementById('barChart').getContext('2d');
+            barChart = new Chart(ctxBar, {
+                type: 'bar',
+                data: {
+                    labels: rawProvinces,
+                    datasets: [
+                        {
+                            label: 'เป้าหมายตามแผน (เครื่อง)',
+                            data: rawProvinces.map(p => summaryGrid[p].total),
+                            backgroundColor: '#e9d5ff',
+                            borderRadius: 6
+                        },
+                        {
+                            label: 'ดำเนินการแล้วเสร็จ',
+                            data: [0, 0, 0, 0, 0, 0, 0], // Dynamically calculated
+                            backgroundColor: '#6b21a8',
+                            borderRadius: 6
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: { legend: { position: 'top' } },
+                    scales: { y: { beginAtZero: true } }
+                }
+            });
+
+            // 2. Donut Chart Parts Ratio
+            const ctxDonut = document.getElementById('donutChart').getContext('2d');
+            donutChart = new Chart(ctxDonut, {
+                type: 'doughnut',
+                data: {
+                    labels: ['Battery UPS (LiPoF4)', 'แบตเตอรี่มือถือ APX2000', 'Desktop Microphone', 'Palm Microphone'],
+                    datasets: [{
+                        data: [9, 19, 47, 119],
+                        backgroundColor: ['#3b82f6', '#a855f7', '#f97316', '#06b6d4'],
+                        borderWidth: 2
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: { legend: { display: false } },
+                    cutout: '70%'
+                }
+            });
+
+            renderDonutLegend();
+        }
+
+        function renderDonutLegend() {
+            const legendContainer = document.getElementById('donut-legend');
+            const categories = [
+                { label: 'Battery UPS (LiPoF4)', count: 9, color: 'bg-blue-500' },
+                { label: 'แบตเตอรี่มือถือ APX2000', count: 19, color: 'bg-purple-500' },
+                { label: 'Desktop Microphone', count: 47, color: 'bg-orange-500' },
+                { label: 'Palm Microphone', count: 119, color: 'bg-cyan-500' }
+            ];
+
+            legendContainer.innerHTML = categories.map(cat => `
+                <div class="flex justify-between items-center">
+                    <div class="flex items-center space-x-2">
+                        <span class="w-3 h-3 rounded-full ${cat.color}"></span>
+                        <span>${cat.label}</span>
+                    </div>
+                    <span class="font-bold text-gray-800">${cat.count} รายการ</span>
+                </div>
+            `).join('');
+        }
+
+        // Render Summary Table (Page 1)
+        function renderSummaryTable() {
+            const tbody = document.getElementById('summary-table-body');
+            const tfoot = document.getElementById('summary-table-foot');
+            const badgesContainer = document.getElementById('province-badges');
+
+            let totals = { ups: 0, hh: 0, desktop: 0, palm: 0, grand: 0 };
+
+            tbody.innerHTML = rawProvinces.map(p => {
+                const row = summaryGrid[p];
+                totals.ups += row.ups;
+                totals.hh += row.hh;
+                totals.desktop += row.desktop;
+                totals.palm += row.palm;
+                totals.grand += row.total;
+
+                return `
+                    <tr class="hover:bg-purple-50/50 transition">
+                        <td class="px-4 py-3 font-semibold text-gray-800">${p}</td>
+                        <td class="px-4 py-3 text-center">${row.ups || '-'}</td>
+                        <td class="px-4 py-3 text-center">${row.hh || '-'}</td>
+                        <td class="px-4 py-3 text-center">${row.desktop || '-'}</td>
+                        <td class="px-4 py-3 text-center">${row.palm || '-'}</td>
+                        <td class="px-4 py-3 text-center font-bold text-purple-900 bg-purple-50">${row.total}</td>
+                    </tr>
+                `;
+            }).join('');
+
+            tfoot.innerHTML = `
+                <td class="px-4 py-3">รวมทั้งหมด</td>
+                <td class="px-4 py-3 text-center">${totals.ups}</td>
+                <td class="px-4 py-3 text-center">${totals.hh}</td>
+                <td class="px-4 py-3 text-center">${totals.desktop}</td>
+                <td class="px-4 py-3 text-center">${totals.palm}</td>
+                <td class="px-4 py-3 text-center text-lg bg-purple-200">${totals.grand}</td>
+            `;
+
+            // Province Mini Badges above Bar Chart
+            badgesContainer.innerHTML = rawProvinces.map(p => {
+                const tot = summaryGrid[p].total;
+                return `
+                    <div class="bg-gray-50 p-2 rounded-lg border border-gray-200">
+                        <p class="text-[10px] text-gray-500 font-medium">${p}</p>
+                        <p class="text-xs font-bold text-purple-900">0/${tot}</p>
+                        <p class="text-[9px] text-purple-600 font-semibold">0%</p>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        // Render Detailed Work List (Page 2)
+        function renderList() {
+            const tbody = document.getElementById('list-table-body');
+            const search = document.getElementById('search-input').value.toLowerCase();
+            const filterProv = document.getElementById('filter-province').value;
+            const filterCat = document.getElementById('filter-category').value;
+            const filterStatus = document.getElementById('filter-status').value;
+
+            const filtered = workData.filter(item => {
+                const matchSearch = item.station.toLowerCase().includes(search) || 
+                                    item.serial.toLowerCase().includes(search) || 
+                                    item.radio_id.toLowerCase().includes(search) ||
+                                    item.vehicle.toLowerCase().includes(search);
+                const matchProv = !filterProv || item.province === filterProv;
+                const matchCat = !filterCat || item.cat === filterCat;
+                const matchStatus = !filterStatus || item.status === filterStatus;
+
+                return matchSearch && matchProv && matchCat && matchStatus;
+            });
+
+            if(filtered.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="8" class="text-center py-8 text-gray-400">ไม่พบข้อมูลตรงตามเงื่อนไข</td></tr>`;
                 return;
             }
 
-            items.forEach((item, index) => {
-                let badgeColor = "bg-yellow-100 text-yellow-800";
-                if(item.status === "กำลังดำเนินการ") badgeColor = "bg-purple-100 text-purple-800";
-                if(item.status === "เสร็จสิ้น") badgeColor = "bg-green-100 text-green-800";
-
-                tbody.innerHTML += `
-                    <tr class="hover:bg-gray-50 text-xs md:text-sm">
-                        <td class="px-4 py-3 text-gray-500 font-mono">${item.id}</td>
-                        <td class="px-4 py-3 font-medium text-gray-800">${item.province}</td>
-                        <td class="px-4 py-3 font-semibold text-purple-900">${item.station}</td>
-                        <td class="px-4 py-3">
-                            <div><span class="font-bold">${item.model}</span> (ID: ${item.radioId})</div>
-                            <div class="text-xs text-gray-500 font-mono">S/N: ${item.serial}</div>
-                        </td>
-                        <td class="px-4 py-3">
-                            <span class="font-medium text-gray-700">${item.sparePart}</span>
-                            <div class="text-xs text-gray-400">${item.category}</div>
-                        </td>
-                        <td class="px-4 py-3 text-center">
-                            <span class="px-2.5 py-1 rounded-full text-xs font-semibold ${badgeColor}">${item.status}</span>
-                        </td>
-                        <td class="px-4 py-3 text-center space-x-1">
-                            <button onclick="openModal(${item.id})" class="px-2.5 py-1 bg-purple-800 text-white rounded hover:bg-purple-900 text-xs">
-                                <i class="fas fa-edit"></i> อัปเดต
-                            </button>
-                            <button onclick="printReport(${item.id})" class="px-2.5 py-1 bg-gray-600 text-white rounded hover:bg-gray-700 text-xs">
-                                <i class="fas fa-print"></i> รายงาน
-                            </button>
-                        </td>
-                    </tr>
-                `;
-            });
+            tbody.innerHTML = filtered.map((item, idx) => `
+                <tr class="hover:bg-gray-50 transition">
+                    <td class="px-3 py-3 text-center text-xs font-medium text-gray-400">${idx + 1}</td>
+                    <td class="px-3 py-3 font-medium text-gray-800">${item.province}</td>
+                    <td class="px-3 py-3 font-semibold text-purple-900">${item.station}</td>
+                    <td class="px-3 py-3">
+                        ${item.vehicle !== '-' ? `<span class="bg-gray-100 border border-gray-300 text-gray-700 px-2 py-0.5 rounded text-xs font-mono font-bold">🚗 ${item.vehicle}</span>` : '<span class="text-gray-300">-</span>'}
+                    </td>
+                    <td class="px-3 py-3 text-xs">
+                        <span class="font-bold text-gray-800">${item.model}</span> 
+                        <span class="text-gray-500">(ID: ${item.radio_id})</span><br>
+                        <span class="text-gray-400 font-mono text-[11px]">S/N: ${item.serial}</span>
+                    </td>
+                    <td class="px-3 py-3 text-xs">
+                        <span class="font-medium text-gray-700">${item.part}</span><br>
+                        <span class="text-[10px] text-purple-600 bg-purple-50 px-1.5 py-0.5 rounded">${item.cat}</span>
+                    </td>
+                    <td class="px-3 py-3 text-center">
+                        <span class="bg-yellow-100 text-yellow-800 text-xs px-2.5 py-1 rounded-full font-semibold">
+                            ${item.status}
+                        </span>
+                    </td>
+                    <td class="px-3 py-3 text-center space-x-1">
+                        <button onclick="updateStatus(${item.id})" class="bg-purple-700 hover:bg-purple-800 text-white text-xs px-2.5 py-1 rounded shadow transition">
+                            อัปเดต
+                        </button>
+                        <button onclick="viewReport(${item.id})" class="bg-gray-700 hover:bg-gray-800 text-white text-xs px-2.5 py-1 rounded shadow transition">
+                            รายงาน
+                        </button>
+                    </td>
+                </tr>
+            `).join('');
         }
 
-        function filterData() {
-            const searchText = document.getElementById('search-input').value.toLowerCase();
-            const prov = document.getElementById('filter-province').value;
-            const cat = document.getElementById('filter-category').value;
-            const stat = document.getElementById('filter-status').value;
+        // Tab Switching Logic
+        function switchTab(tab) {
+            const pDash = document.getElementById('page-dashboard');
+            const pList = document.getElementById('page-list');
+            const btnDash = document.getElementById('tab-dashboard');
+            const btnList = document.getElementById('tab-list');
 
-            const filtered = rawData.filter(item => {
-                const matchSearch = item.station.toLowerCase().includes(searchText) || 
-                                    item.serial.toLowerCase().includes(searchText) || 
-                                    item.radioId.toLowerCase().includes(searchText);
-                const matchProv = !prov || item.province === prov;
-                const matchCat = !cat || item.category === cat;
-                const matchStat = !stat || item.status === stat;
-
-                return matchSearch && matchProv && matchCat && matchStat;
-            });
-
-            renderJobList(filtered);
-        }
-
-        function openModal(id) {
-            const item = rawData.find(d => d.id === id);
-            if(!item) return;
-
-            document.getElementById('modal-job-id').value = item.id;
-            document.getElementById('modal-info-station').innerText = `${item.station} (${item.province})`;
-            document.getElementById('modal-info-device').innerText = `${item.model} | ID: ${item.radioId} | S/N: ${item.serial}`;
-            document.getElementById('modal-info-part').innerText = `${item.sparePart} (${item.category})`;
-            document.getElementById('modal-status').value = item.status || "รอดำเนินการ";
-            document.getElementById('modal-inspector').value = item.inspector || "";
-            document.getElementById('modal-remark').value = item.remark || "";
-
-            const bPreview = document.getElementById('before-preview');
-            const aPreview = document.getElementById('after-preview');
-
-            if(item.beforeImg) { bPreview.src = item.beforeImg; bPreview.classList.remove('hidden'); }
-            else { bPreview.classList.add('hidden'); }
-
-            if(item.afterImg) { aPreview.src = item.afterImg; aPreview.classList.remove('hidden'); }
-            else { aPreview.classList.add('hidden'); }
-
-            document.getElementById('update-modal').classList.remove('hidden');
-        }
-
-        function closeModal() {
-            document.getElementById('update-modal').classList.add('hidden');
-        }
-
-        function previewImage(input, previewId) {
-            const file = input.files[0];
-            if (file) {
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    const img = document.getElementById(previewId);
-                    img.src = e.target.result;
-                    img.classList.remove('hidden');
-                }
-                reader.readAsDataURL(file);
+            if(tab === 'dashboard') {
+                pDash.classList.remove('hidden');
+                pList.classList.add('hidden');
+                btnDash.className = "bg-purple-700 hover:bg-purple-600 text-white px-4 py-2 rounded-lg text-sm font-semibold flex items-center space-x-2 transition border border-purple-500 shadow";
+                btnList.className = "bg-purple-900 hover:bg-purple-800 text-purple-200 px-4 py-2 rounded-lg text-sm font-semibold flex items-center space-x-2 transition border border-transparent";
+            } else {
+                pDash.classList.add('hidden');
+                pList.classList.remove('hidden');
+                btnList.className = "bg-purple-700 hover:bg-purple-600 text-white px-4 py-2 rounded-lg text-sm font-semibold flex items-center space-x-2 transition border border-purple-500 shadow";
+                btnDash.className = "bg-purple-900 hover:bg-purple-800 text-purple-200 px-4 py-2 rounded-lg text-sm font-semibold flex items-center space-x-2 transition border border-transparent";
             }
         }
 
-        function saveJobUpdate(e) {
-            e.preventDefault();
-            const id = parseInt(document.getElementById('modal-job-id').value);
-            const item = rawData.find(d => d.id === id);
-
-            if(item) {
-                item.status = document.getElementById('modal-status').value;
-                item.inspector = document.getElementById('modal-inspector').value;
-                item.remark = document.getElementById('modal-remark').value;
-                item.updatedAt = new Date().toLocaleDateString('th-TH');
-
-                const bImgSrc = document.getElementById('before-preview').src;
-                const aImgSrc = document.getElementById('after-preview').src;
-
-                if(bImgSrc && !bImgSrc.endsWith('#')) item.beforeImg = bImgSrc;
-                if(aImgSrc && !aImgSrc.endsWith('#')) item.afterImg = aImgSrc;
-
-                saveToLocalStorage();
-                renderAll();
-                closeModal();
-            }
+        // Placeholder Functions for Buttons
+        function updateStatus(id) {
+            alert(`อัปเดตสถานะสำหรับรายการที่ ${id}`);
         }
 
-        function printReport(id) {
-            const item = rawData.find(d => d.id === id);
-            if(!item) return;
-
-            document.getElementById('print-province').innerText = item.province;
-            document.getElementById('print-station').innerText = item.station;
-            document.getElementById('print-model').innerText = item.model;
-            document.getElementById('print-radioid').innerText = item.radioId;
-            document.getElementById('print-serial').innerText = item.serial;
-            document.getElementById('print-part').innerText = `${item.sparePart} (${item.category})`;
-            document.getElementById('print-inspector').innerText = item.inspector || '-';
-            document.getElementById('print-date').innerText = item.updatedAt || new Date().toLocaleDateString('th-TH');
-            document.getElementById('print-remark').innerText = item.remark || '-';
-
-            const bImg = document.getElementById('print-before-img');
-            const bHolder = document.getElementById('print-before-placeholder');
-            if(item.beforeImg) { bImg.src = item.beforeImg; bImg.classList.remove('hidden'); bHolder.classList.add('hidden'); }
-            else { bImg.classList.add('hidden'); bHolder.classList.remove('hidden'); }
-
-            const aImg = document.getElementById('print-after-img');
-            const aHolder = document.getElementById('print-after-placeholder');
-            if(item.afterImg) { aImg.src = item.afterImg; aImg.classList.remove('hidden'); aHolder.classList.add('hidden'); }
-            else { aImg.classList.add('hidden'); aHolder.classList.remove('hidden'); }
-
-            window.print();
+        function viewReport(id) {
+            alert(`ดูรายงานสำหรับรายการที่ ${id}`);
         }
 
-        // Initialize on Load
-        window.onload = initData;
+        // Initial Executions
+        window.onload = function() {
+            initData();
+            renderSummaryTable();
+            initCharts();
+            renderList();
+        };
     </script>
 </body>
 </html>
