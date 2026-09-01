@@ -30,9 +30,6 @@ button,input,select,textarea{font-family:inherit}
 .badge-done{background:#ecfdf5;color:#047857}
 .nav-btn.active{background:linear-gradient(135deg,#6d28d9,#7c3aed);color:#fff;box-shadow:0 8px 18px rgba(109,40,217,.22)}
 .nav-btn{transition:.2s}
-.quick-card{border:1px solid #edeef3;border-radius:16px;background:#fff;transition:.2s;cursor:pointer}
-.quick-card:hover{transform:translateY(-2px);box-shadow:0 10px 24px rgba(17,24,39,.07);border-color:#ddd6fe}
-.section-kicker{font-size:.72rem;font-weight:700;letter-spacing:.04em;text-transform:uppercase;color:#7c3aed}
 .nav-btn:not(.active):hover{background:#f3f4f6}
 .metric-line{height:8px;border-radius:999px;background:#edeef2;overflow:hidden}
 .metric-line>span{display:block;height:100%;border-radius:inherit;background:linear-gradient(90deg,#7c3aed,#a78bfa)}
@@ -45,7 +42,6 @@ button,input,select,textarea{font-family:inherit}
   .report-page *{-webkit-print-color-adjust:exact;print-color-adjust:exact}
   .print-hidden{display:none!important}
   .report-sheet{box-shadow:none!important;border:none!important;border-radius:0!important}
-  .report-item{break-inside:avoid;page-break-inside:avoid}
 }
 @media(max-width:900px){.sidebar{display:none}.mobile-nav{display:flex}.main{margin-left:0!important}}
 </style>
@@ -63,22 +59,13 @@ button,input,select,textarea{font-family:inherit}
       <button class="nav-btn active w-full text-left px-4 py-3 rounded-xl font-semibold text-sm" data-tab="dashboard">📊 Dashboard</button>
       <button class="nav-btn w-full text-left px-4 py-3 rounded-xl font-semibold text-sm text-gray-600" data-tab="work">🛠️ รายการงาน</button>
       <button class="nav-btn w-full text-left px-4 py-3 rounded-xl font-semibold text-sm text-gray-600" data-tab="report">📄 รายงาน</button>
-    </nav>
-    <div class="mt-auto p-4">
-      <div class="rounded-2xl bg-violet-50 border border-violet-100 p-4">
-        <div class="text-xs text-violet-700 font-semibold mb-1">ข้อมูลอ้างอิง</div>
-        <div class="text-sm font-semibold text-gray-800">Radio Equipment Replacement Plan</div>
-        <div class="text-xs text-gray-500 mt-1">PEA C1 • 194 รายการ</div>
-      </div>
-    </div>
-  </aside>
 
   <main class="main ml-[250px] flex-1 min-w-0">
     <header class="sticky top-0 z-30 glass border-b border-gray-200/70">
       <div class="px-5 md:px-8 py-4 flex items-center justify-between gap-4">
         <div>
           <div id="page-title" class="text-xl md:text-2xl font-bold text-gray-900">Dashboard</div>
-          <div class="text-xs md:text-sm text-gray-500">ติดตามแผนเปลี่ยนอะไหล่อุปกรณ์วิทยุสื่อสาร</div>
+          <div class="text-xs md:text-sm text-gray-500">ติดตามแผนเปลี่ยนอะไหล่อุปกรณ์วิทยุสื่อสาร • ข้อมูลจาก Excel ต้นฉบับ</div>
         </div>
         <div class="flex flex-wrap gap-2 items-center">
           <div class="md:hidden flex gap-1">
@@ -93,22 +80,12 @@ button,input,select,textarea{font-family:inherit}
     </header>
 
     <section id="tab-dashboard" class="tab-panel p-5 md:p-8 space-y-6">
-      <div class="grid grid-cols-2 xl:grid-cols-4 gap-4">
-        <div class="card kpi p-5"><div class="text-xs text-gray-500">งานทั้งหมด</div><div id="kpi-total" class="text-3xl font-bold mt-2">194</div><div class="text-xs text-gray-400 mt-1">รายการทั้งหมดในระบบ</div></div>
-        <div class="card kpi p-5"><div class="text-xs text-gray-500">รอดำเนินการ</div><div id="kpi-pending" class="text-3xl font-bold mt-2 text-orange-600">194</div><div class="text-xs text-gray-400 mt-1">ยังไม่เริ่มงาน</div></div>
-        <div class="card kpi p-5"><div class="text-xs text-gray-500">กำลังดำเนินการ</div><div id="kpi-progress" class="text-3xl font-bold mt-2 text-violet-700">0</div><div class="text-xs text-gray-400 mt-1">กำลังรอปิดงาน</div></div>
-        <div class="card kpi p-5"><div class="text-xs text-gray-500">เสร็จสิ้นแล้ว</div><div id="kpi-done" class="text-3xl font-bold mt-2 text-emerald-600">0</div><div class="text-xs text-gray-400 mt-1">ปิดงานแล้ว</div></div>
-      </div>
-
-      <div class="card p-5 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
-        <div class="min-w-0"><div class="section-kicker">Project Progress</div><div class="text-lg font-bold text-gray-900 mt-1">ความคืบหน้าโครงการ</div><div class="text-sm text-gray-500 mt-1">ติดตามจากจำนวนรายการที่เปลี่ยนเสร็จจากทั้งหมด 194 รายการ</div></div>
-        <div class="md:w-[360px] w-full"><div class="flex items-center justify-between text-sm mb-2"><span class="text-gray-500">Progress</span><span id="kpi-percent" class="font-bold text-violet-700">0%</span></div><div class="metric-line"><span id="kpi-bar" style="width:0%"></span></div></div>
-      </div>
-
-      <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
-        <div class="quick-card p-4" data-quick-tab="work"><div class="text-2xl">🛠️</div><div class="font-bold mt-2">จัดการงาน</div><div class="text-xs text-gray-500 mt-1">ค้นหาและอัปเดตสถานะแต่ละจุด</div></div>
-        <div class="quick-card p-4" data-quick-tab="report"><div class="text-2xl">📄</div><div class="font-bold mt-2">ออกรายงาน</div><div class="text-xs text-gray-500 mt-1">สร้างรายงานสรุปหรือรายงานพร้อมรูป</div></div>
-        <div class="quick-card p-4" data-quick-tab="report"><div class="text-2xl">📷</div><div class="font-bold mt-2">Before / After</div><div class="text-xs text-gray-500 mt-1">ใช้รูปเป็นหลักฐานการเปลี่ยนงาน</div></div>
+      <div class="grid grid-cols-2 xl:grid-cols-5 gap-4">
+        <div class="card kpi p-5"><div class="text-xs text-gray-500">งานทั้งหมด</div><div id="kpi-total" class="text-3xl font-bold mt-2">194</div><div class="text-xs text-gray-400 mt-1">รายการตาม Excel</div></div>
+        <div class="card kpi p-5"><div class="text-xs text-gray-500">รอดำเนินการ</div><div id="kpi-pending" class="text-3xl font-bold mt-2 text-orange-600">194</div><div class="text-xs text-gray-400 mt-1">ยังไม่ปิดงาน</div></div>
+        <div class="card kpi p-5"><div class="text-xs text-gray-500">กำลังดำเนินการ</div><div id="kpi-progress" class="text-3xl font-bold mt-2 text-violet-700">0</div><div class="text-xs text-gray-400 mt-1">งานที่เริ่มแล้ว</div></div>
+        <div class="card kpi p-5"><div class="text-xs text-gray-500">เสร็จสิ้น</div><div id="kpi-done" class="text-3xl font-bold mt-2 text-emerald-600">0</div><div class="text-xs text-gray-400 mt-1">ปิดงานแล้ว</div></div>
+        <div class="card kpi p-5"><div class="text-xs text-gray-500">ความคืบหน้า</div><div id="kpi-percent" class="text-3xl font-bold mt-2 text-blue-600">0%</div><div class="metric-line mt-3"><span id="kpi-bar" style="width:0%"></span></div></div>
       </div>
 
       <div class="grid grid-cols-1 xl:grid-cols-3 gap-6">
@@ -146,7 +123,7 @@ button,input,select,textarea{font-family:inherit}
         </div>
       </div>
       <div class="card overflow-hidden">
-        <div class="px-5 py-4 border-b flex items-center justify-between"><div><div class="section-kicker">Worklist</div><div class="font-bold text-lg">รายการงานทั้งหมด</div><div class="text-xs text-gray-500">กด “จัดการ” เพื่อบันทึกสถานะ วันที่ และรูปก่อนทำ / หลังทำ</div></div><div id="result-count" class="text-sm text-gray-500">0 รายการ</div></div>
+        <div class="px-5 py-4 border-b flex items-center justify-between"><div><div class="font-bold">รายการงาน</div><div class="text-xs text-gray-500">กด “จัดการ” เพื่ออัปเดตสถานะ วันที่ หมายเหตุ และรูปก่อนทำ / หลังทำ</div></div><div id="result-count" class="text-sm text-gray-500">0 รายการ</div></div>
         <div class="table-wrap"><table class="w-full text-sm"><thead><tr class="text-xs text-gray-600"><th class="px-3 py-3 text-center">#</th><th class="px-3 py-3 text-left">จังหวัด</th><th class="px-3 py-3 text-left">สถานี / หน่วยงาน</th><th class="px-3 py-3 text-left">รถ</th><th class="px-3 py-3 text-left">อุปกรณ์</th><th class="px-3 py-3 text-left">อะไหล่</th><th class="px-3 py-3 text-center">สถานะ</th><th class="px-3 py-3 text-center">วันที่</th><th class="px-3 py-3 text-center">จัดการ</th></tr></thead><tbody id="work-body"></tbody></table></div>
       </div>
     </section>
@@ -157,7 +134,7 @@ button,input,select,textarea{font-family:inherit}
           <div class="flex-1"><div class="font-bold text-lg">ศูนย์จัดทำรายงาน</div><div class="text-xs text-gray-500">สร้างรายงานตามช่วงข้อมูลที่เลือก แล้วพิมพ์เป็น PDF หรือ Export Excel ได้</div></div>
           <div><label class="text-xs text-gray-500">จังหวัด</label><select id="report-province" class="mt-1 border border-gray-200 rounded-xl px-3 py-2.5 min-w-[170px]"></select></div>
           <div><label class="text-xs text-gray-500">ประเภท</label><select id="report-category" class="mt-1 border border-gray-200 rounded-xl px-3 py-2.5 min-w-[190px]"></select></div>
-          <div><label class="text-xs text-gray-500">สถานะ</label><select id="report-status" class="mt-1 border border-gray-200 rounded-xl px-3 py-2.5 min-w-[150px]"><option value="">ทุกสถานะ</option><option>รอดำเนินการ</option><option>กำลังดำเนินการ</option><option>เสร็จสิ้น</option></select></div><div><label class="text-xs text-gray-500">รูปแบบรายงาน</label><select id="report-format" class="mt-1 border border-gray-200 rounded-xl px-3 py-2.5 min-w-[180px]"><option value="summary">สรุปงาน</option><option value="evidence">รายละเอียด + Before / After</option></select></div>
+          <div><label class="text-xs text-gray-500">สถานะ</label><select id="report-status" class="mt-1 border border-gray-200 rounded-xl px-3 py-2.5 min-w-[150px]"><option value="">ทุกสถานะ</option><option>รอดำเนินการ</option><option>กำลังดำเนินการ</option><option>เสร็จสิ้น</option></select></div>
           <button id="print-report" class="px-4 py-2.5 rounded-xl bg-violet-700 text-white font-semibold">🖨️ พิมพ์ / PDF</button><button id="export-report" class="px-4 py-2.5 rounded-xl bg-gray-900 text-white font-semibold">⬇ Excel รายงาน</button>
         </div>
       </div>
@@ -261,7 +238,7 @@ function renderAttention(){
  const pending=data.filter(x=>x.status==='รอดำเนินการ').length,progress=data.filter(x=>x.status==='กำลังดำเนินการ').length,done=data.filter(x=>x.status==='เสร็จสิ้น').length;
  const tone={orange:'bg-orange-50 text-orange-700',violet:'bg-violet-50 text-violet-700',emerald:'bg-emerald-50 text-emerald-700'}; document.getElementById('attention-list').innerHTML=[
    ['รอดำเนินการ',pending,'orange'],['กำลังดำเนินการ',progress,'violet'],['เสร็จสิ้น',done,'emerald']
- ].map(([l,n,c])=>`<div class="flex items-center justify-between p-3 rounded-xl ${tone[c]}"><div class="text-sm font-semibold">${l}</div><div class="font-bold">${n}</div></div>`).join('')+`<div class="mt-4 text-xs text-gray-500">ข้อมูลฐาน: 194 รายการ</div>`;
+ ].map(([l,n,c])=>`<div class="flex items-center justify-between p-3 rounded-xl ${tone[c]}"><div class="text-sm font-semibold">${l}</div><div class="font-bold">${n}</div></div>`).join('')+`<div class="mt-4 text-xs text-gray-500">ข้อมูลฐาน: 194 รายการ • ข้อมูลต้นฉบับจาก Excel</div>`;
 }
 function renderWorkList(){
  const arr=filteredData(data,''); const body=document.getElementById('work-body'); document.getElementById('result-count').textContent=arr.length+' รายการ';
@@ -275,33 +252,23 @@ function reportFilterData(){
  const p=document.getElementById('report-province').value,c=document.getElementById('report-category').value,s=document.getElementById('report-status').value;
  return data.filter(x=>(!p||x.province===p)&&(!c||x.cat===c)&&(!s||x.status===s));
 }
-function reportFilterData(){
- const p=document.getElementById('report-province').value,c=document.getElementById('report-category').value,s=document.getElementById('report-status').value;
- return data.filter(x=>(!p||x.province===p)&&(!c||x.cat===c)&&(!s||x.status===s));
-}
 function renderReport(){
  const arr=reportFilterData(),done=arr.filter(x=>x.status==='เสร็จสิ้น').length;
- const fmt=document.getElementById('report-format')?.value||'summary';
  document.getElementById('report-count').textContent=arr.length;
  document.getElementById('report-done').textContent=done;
  document.getElementById('report-percent').textContent=pct(done,arr.length)+'%';
  const p=document.getElementById('report-province').value||'ทุกจังหวัด',c=document.getElementById('report-category').value||'ทุกประเภท',s=document.getElementById('report-status').value||'ทุกสถานะ';
- if(fmt==='summary'){
-   document.getElementById('report-preview').innerHTML=`<div class="border-b pb-4 mb-4 flex items-start justify-between gap-4"><div><div class="section-kicker">Report Preview</div><div class="font-bold text-lg mt-1">รายงานสรุปงานเปลี่ยนอะไหล่</div><div class="text-xs text-gray-500 mt-1">${esc(p)} • ${esc(c)} • ${esc(s)}</div></div><div class="text-right text-xs text-gray-400">ออกรายงาน ${new Date().toLocaleDateString('th-TH')}</div></div><div class="overflow-auto"><table class="w-full text-sm"><thead><tr class="bg-gray-50 text-xs"><th class="px-3 py-2 text-left">#</th><th class="px-3 py-2 text-left">จังหวัด</th><th class="px-3 py-2 text-left">สถานี</th><th class="px-3 py-2 text-left">รถ</th><th class="px-3 py-2 text-left">ID / S/N</th><th class="px-3 py-2 text-left">อะไหล่</th><th class="px-3 py-2 text-center">สถานะ</th><th class="px-3 py-2">วันที่</th><th class="px-3 py-2 text-center">รูป</th></tr></thead><tbody>${arr.map((x,i)=>`<tr class="border-b"><td class="px-3 py-2">${i+1}</td><td class="px-3 py-2">${esc(x.province)}</td><td class="px-3 py-2">${esc(x.station)}</td><td class="px-3 py-2">${esc(x.vehicle||'-')}</td><td class="px-3 py-2">${esc(x.radioId)} / ${esc(x.serial)}</td><td class="px-3 py-2">${esc(x.part)}</td><td class="px-3 py-2 text-center">${statusBadge(x.status)}</td><td class="px-3 py-2">${x.date||'-'}</td><td class="px-3 py-2 text-center">${x.photoBefore&&x.photoAfter?'ก่อน/หลัง':x.photoBefore?'ก่อนทำ':x.photoAfter?'หลังทำ':'-'}</td></tr>`).join('')}</tbody></table></div>`;
- } else {
-   document.getElementById('report-preview').innerHTML=`<div class="border-b pb-4 mb-4"><div class="section-kicker">Evidence Report</div><div class="font-bold text-lg mt-1">รายงานรายละเอียดการเปลี่ยนอะไหล่พร้อมภาพ Before / After</div><div class="text-xs text-gray-500 mt-1">${esc(p)} • ${esc(c)} • ${esc(s)}</div></div>${arr.map((x,i)=>`<div class="border border-gray-200 rounded-2xl p-4 mb-4"><div class="flex flex-wrap items-center justify-between gap-2 mb-3"><div class="font-bold">${i+1}. ${esc(x.station)}</div><div>${statusBadge(x.status)}</div></div><div class="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-2 text-sm"><div><span class="text-xs text-gray-400">จังหวัด</span><div class="font-semibold">${esc(x.province)}</div></div><div><span class="text-xs text-gray-400">วันที่</span><div class="font-semibold">${x.date||'-'}</div></div><div><span class="text-xs text-gray-400">รถ</span><div>${esc(x.vehicle||'-')}</div></div><div><span class="text-xs text-gray-400">ID / S/N</span><div>${esc(x.radioId)} / ${esc(x.serial)}</div></div><div><span class="text-xs text-gray-400">อุปกรณ์</span><div>${esc(x.model)}</div></div><div><span class="text-xs text-gray-400">อะไหล่</span><div>${esc(x.part)}</div></div></div><div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4"><div><div class="text-sm font-bold mb-2">📷 ก่อนทำ</div>${x.photoBefore?`<img src="${x.photoBefore}" class="w-full h-56 object-contain rounded-xl border bg-gray-50">`:'<div class="h-56 rounded-xl border border-dashed flex items-center justify-center text-gray-400">ยังไม่มีรูป</div>'}</div><div><div class="text-sm font-bold mb-2">📸 หลังทำ</div>${x.photoAfter?`<img src="${x.photoAfter}" class="w-full h-56 object-contain rounded-xl border bg-gray-50">`:'<div class="h-56 rounded-xl border border-dashed flex items-center justify-center text-gray-400">ยังไม่มีรูป</div>'}</div></div>${x.note?`<div class="mt-3 p-3 bg-gray-50 rounded-xl text-sm"><span class="text-xs text-gray-400">บันทึกผล</span><div class="mt-1">${esc(x.note)}</div></div>`:''}</div>`).join('') || '<div class="py-12 text-center text-gray-400">ไม่พบข้อมูลตามเงื่อนไข</div>'}`;
- }
- updatePrint(arr,p,c,s,fmt);
+ document.getElementById('report-preview').innerHTML=`<div class="border-b pb-4 mb-4"><div class="font-bold text-lg">รายงานสรุปงานเปลี่ยนอะไหล่</div><div class="text-xs text-gray-500 mt-1">เงื่อนไข: ${esc(p)} • ${esc(c)} • ${esc(s)}</div></div><div class="overflow-auto"><table class="w-full text-sm"><thead><tr class="bg-gray-50 text-xs"><th class="px-3 py-2 text-left">#</th><th class="px-3 py-2 text-left">จังหวัด</th><th class="px-3 py-2 text-left">สถานี</th><th class="px-3 py-2 text-left">รถ</th><th class="px-3 py-2 text-left">ID / S/N</th><th class="px-3 py-2 text-left">อะไหล่</th><th class="px-3 py-2 text-center">สถานะ</th><th class="px-3 py-2">วันที่</th><th class="px-3 py-2 text-center">รูป</th></tr></thead><tbody>${arr.map((x,i)=>`<tr class="border-b"><td class="px-3 py-2">${i+1}</td><td class="px-3 py-2">${esc(x.province)}</td><td class="px-3 py-2">${esc(x.station)}</td><td class="px-3 py-2">${esc(x.vehicle||'-')}</td><td class="px-3 py-2">${esc(x.radioId)} / ${esc(x.serial)}</td><td class="px-3 py-2">${esc(x.part)}</td><td class="px-3 py-2 text-center">${statusBadge(x.status)}</td><td class="px-3 py-2">${x.date||'-'}</td><td class="px-3 py-2 text-center">${x.photoBefore&&x.photoAfter?'ก่อน/หลัง':x.photoBefore?'ก่อนทำ':x.photoAfter?'หลังทำ':'-'}</td></tr>`).join('')}</tbody></table></div>`;
+ updatePrint(arr,p,c,s);
 }
-function updatePrint(arr,p,c,s,fmt){
+function updatePrint(arr,p,c,s){
  document.getElementById('print-date').textContent=new Date().toLocaleDateString('th-TH');
  document.getElementById('print-filter').textContent=p+' • '+c+' • '+s;
  const done=arr.filter(x=>x.status==='เสร็จสิ้น').length;
  document.getElementById('print-count').textContent=arr.length;
  document.getElementById('print-done').textContent=done;
  document.getElementById('print-percent').textContent=pct(done,arr.length)+'%';
- const evidence=fmt==='evidence';
- document.getElementById('print-table').innerHTML=arr.map((x,i)=>`<div class="report-item" style="border:1px solid #ddd;border-radius:12px;padding:12px;margin-bottom:14px"><table style="width:100%;border-collapse:collapse;font-size:12px"><tr><td style="padding:5px;width:18%;color:#666">ลำดับ</td><td style="padding:5px;font-weight:700">${i+1}</td><td style="padding:5px;width:18%;color:#666">สถานะ</td><td style="padding:5px;font-weight:700">${esc(x.status)}</td><td style="padding:5px;width:18%;color:#666">วันที่</td><td style="padding:5px">${x.date||'-'}</td></tr><tr><td style="padding:5px;color:#666">จังหวัด</td><td style="padding:5px">${esc(x.province)}</td><td style="padding:5px;color:#666">สถานี / หน่วยงาน</td><td colspan="3" style="padding:5px">${esc(x.station)}</td></tr><tr><td style="padding:5px;color:#666">รถ</td><td style="padding:5px">${esc(x.vehicle||'-')}</td><td style="padding:5px;color:#666">ID / S/N</td><td colspan="3" style="padding:5px">${esc(x.radioId)} / ${esc(x.serial)}</td></tr><tr><td style="padding:5px;color:#666">อุปกรณ์</td><td style="padding:5px">${esc(x.model)}</td><td style="padding:5px;color:#666">อะไหล่</td><td colspan="3" style="padding:5px">${esc(x.part)}</td></tr></table>${evidence?`<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:10px"><div><div style="font-weight:700;margin-bottom:6px">รูปก่อนทำ</div>${x.photoBefore?`<img src="${x.photoBefore}" style="width:100%;height:220px;object-fit:contain;border:1px solid #ddd;border-radius:8px;background:#fafafa">`:'<div style="height:220px;border:1px dashed #ccc;border-radius:8px;display:flex;align-items:center;justify-content:center;color:#aaa">ไม่มีรูป</div>'}</div><div><div style="font-weight:700;margin-bottom:6px">รูปหลังทำ</div>${x.photoAfter?`<img src="${x.photoAfter}" style="width:100%;height:220px;object-fit:contain;border:1px solid #ddd;border-radius:8px;background:#fafafa">`:'<div style="height:220px;border:1px dashed #ccc;border-radius:8px;display:flex;align-items:center;justify-content:center;color:#aaa">ไม่มีรูป</div>'}</div></div>${x.note?`<div style="margin-top:8px;padding:8px;background:#f7f7f8;border-radius:8px;font-size:12px"><b>บันทึกผล:</b> ${esc(x.note)}</div>`:''}`:''}</div>`).join('');
+ document.getElementById('print-table').innerHTML=`${arr.map((x,i)=>`<div style="break-inside:avoid;border:1px solid #ddd;border-radius:12px;padding:12px;margin-bottom:14px"><table style="width:100%;border-collapse:collapse;font-size:12px"><tr><td style="padding:5px;width:18%;color:#666">ลำดับ</td><td style="padding:5px;font-weight:700">${i+1}</td><td style="padding:5px;width:18%;color:#666">สถานะ</td><td style="padding:5px;font-weight:700">${esc(x.status)}</td><td style="padding:5px;width:18%;color:#666">วันที่</td><td style="padding:5px">${x.date||'-'}</td></tr><tr><td style="padding:5px;color:#666">จังหวัด</td><td style="padding:5px">${esc(x.province)}</td><td style="padding:5px;color:#666">สถานี / หน่วยงาน</td><td colspan="3" style="padding:5px">${esc(x.station)}</td></tr><tr><td style="padding:5px;color:#666">รถ</td><td style="padding:5px">${esc(x.vehicle||'-')}</td><td style="padding:5px;color:#666">ID / S/N</td><td colspan="3" style="padding:5px">${esc(x.radioId)} / ${esc(x.serial)}</td></tr><tr><td style="padding:5px;color:#666">อุปกรณ์</td><td style="padding:5px">${esc(x.model)}</td><td style="padding:5px;color:#666">อะไหล่</td><td colspan="3" style="padding:5px">${esc(x.part)}</td></tr><tr><td style="padding:5px;color:#666">หมายเหตุหน้างาน</td><td colspan="5" style="padding:5px">${esc(x.note||'-')}</td></tr></table><div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:10px"><div><div style="font-weight:700;margin-bottom:6px">📷 รูปก่อนทำ</div>${x.photoBefore?`<img src="${x.photoBefore}" style="width:100%;height:220px;object-fit:contain;border:1px solid #ddd;border-radius:8px;background:#fafafa">`:'<div style="height:220px;border:1px dashed #ccc;border-radius:8px;display:flex;align-items:center;justify-content:center;color:#aaa">ไม่มีรูป</div>'}</div><div><div style="font-weight:700;margin-bottom:6px">📸 รูปหลังทำ</div>${x.photoAfter?`<img src="${x.photoAfter}" style="width:100%;height:220px;object-fit:contain;border:1px solid #ddd;border-radius:8px;background:#fafafa">`:'<div style="height:220px;border:1px dashed #ccc;border-radius:8px;display:flex;align-items:center;justify-content:center;color:#aaa">ไม่มีรูป</div>'}</div></div></div>`).join('')}`;
 }
 function openModal(id){
  activeItemId=id; const x=data.find(i=>i.id===id); if(!x)return;
@@ -322,7 +289,7 @@ async function saveModal(){
  if(before) x.photoBefore=await compressImage(before); if(after) x.photoAfter=await compressImage(after);
  saveData();updateAll();closeModal();
 }
-function exportRows(arr,filename){ const rows=arr.map((x,i)=>({'ลำดับ':i+1,'จังหวัด':x.province,'ชื่อสถานี':x.station,'รุ่นอุปกรณ์':x.model,'ID':x.radioId,'ทะเบียนรถ':x.vehicle,'หมายเลขเครื่อง':x.serial,'ประเภทอะไหล่':x.cat,'อะไหล่':x.part,'สถานะ':x.status,'วันที่ดำเนินการ':x.date||''})); const ws=XLSX.utils.json_to_sheet(rows); ws['!cols']=[{wch:8},{wch:14},{wch:34},{wch:14},{wch:12},{wch:14},{wch:18},{wch:24},{wch:28},{wch:18},{wch:16}]; const wb=XLSX.utils.book_new();XLSX.utils.book_append_sheet(wb,ws,'Report');XLSX.writeFile(wb,filename); }
+function exportRows(arr,filename){ const rows=arr.map((x,i)=>({'ลำดับ':i+1,'จังหวัด':x.province,'ชื่อสถานี':x.station,'รุ่นอุปกรณ์':x.model,'ID':x.radioId,'ทะเบียนรถ':x.vehicle,'หมายเลขเครื่อง':x.serial,'ประเภทอะไหล่':x.cat,'อะไหล่':x.part,'สถานะ':x.status,'วันที่ดำเนินการ':x.date||'','หมายเหตุหน้างาน':x.note||''})); const ws=XLSX.utils.json_to_sheet(rows); ws['!cols']=[{wch:8},{wch:14},{wch:34},{wch:14},{wch:12},{wch:14},{wch:18},{wch:24},{wch:28},{wch:18},{wch:16},{wch:45}]; const wb=XLSX.utils.book_new();XLSX.utils.book_append_sheet(wb,ws,'Report');XLSX.writeFile(wb,filename); }
 function exportReport(){ const arr=reportFilterData(); const stamp=new Date().toISOString().slice(0,10); exportRows(arr,'PEA_C1_Replacement_Report_'+stamp+'.xlsx'); }
 function exportCurrent(){ const arr=filteredData(data,''); const stamp=new Date().toISOString().slice(0,10); exportRows(arr,'PEA_C1_Worklist_'+stamp+'.xlsx'); }
 function showTab(tab){ document.querySelectorAll('.tab-panel').forEach(x=>x.classList.add('hidden'));document.getElementById('tab-'+tab).classList.remove('hidden');document.querySelectorAll('.nav-btn').forEach(x=>x.classList.toggle('active',x.dataset.tab===tab));document.getElementById('page-title').textContent=tab==='dashboard'?'Dashboard':tab==='work'?'รายการงาน':'รายงาน'; if(tab==='report')renderReport(); }
@@ -331,15 +298,14 @@ function updateAll(){updateKPIs();renderCharts();renderProvinceSummary();renderA
 document.querySelectorAll('.nav-btn,.mobile-tab').forEach(b=>b.addEventListener('click',()=>showTab(b.dataset.tab)));
 document.getElementById('top-report-btn').addEventListener('click',()=>showTab('report'));
 ['search','filter-province','filter-category','filter-status'].forEach(id=>document.getElementById(id).addEventListener('input',renderWorkList));
-['report-province','report-category','report-status','report-format'].forEach(id=>document.getElementById(id).addEventListener('change',renderReport));
-document.querySelectorAll('[data-quick-tab]').forEach(el=>el.addEventListener('click',()=>showTab(el.dataset.quickTab)));
+['report-province','report-category','report-status'].forEach(id=>document.getElementById(id).addEventListener('change',renderReport));
 document.getElementById('export-current').addEventListener('click',exportCurrent);document.getElementById('export-report').addEventListener('click',exportReport);
 document.getElementById('print-report').addEventListener('click',()=>{renderReport();setTimeout(()=>window.print(),80);});
 document.getElementById('modal-close').addEventListener('click',closeModal);document.getElementById('modal-cancel').addEventListener('click',closeModal);document.getElementById('modal-save').addEventListener('click',saveModal);
 document.getElementById('work-modal').addEventListener('click',e=>{if(e.target.id==='work-modal')closeModal();});
 document.getElementById('modal-before').addEventListener('change',async e=>{ const f=e.target.files[0]; if(f){const d=await compressImage(f);document.getElementById('before-preview').innerHTML=`<img src="${d}" class="w-full h-44 object-contain rounded-xl border bg-gray-50">`;} });
 document.getElementById('modal-after').addEventListener('change',async e=>{ const f=e.target.files[0]; if(f){const d=await compressImage(f);document.getElementById('after-preview').innerHTML=`<img src="${d}" class="w-full h-44 object-contain rounded-xl border bg-gray-50">`;} });
-document.getElementById('reset-btn').addEventListener('click',()=>{if(confirm('ต้องการลบสถานะ/ข้อมูลหน้างานที่บันทึกไว้ทั้งหมดหรือไม่? ข้อมูลรายการงานจะไม่ถูกลบ')){localStorage.removeItem(STORAGE_KEY);data=loadData();updateAll();}});
+document.getElementById('reset-btn').addEventListener('click',()=>{if(confirm('ต้องการลบสถานะ/ข้อมูลหน้างานที่บันทึกไว้ทั้งหมดหรือไม่? ข้อมูลต้นฉบับ Excel จะไม่ถูกลบ')){localStorage.removeItem(STORAGE_KEY);data=loadData();updateAll();}});
 
 // initial
 initFilters();data=loadData();updateAll();
