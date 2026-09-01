@@ -21,6 +21,96 @@ button,input,select,textarea{font-family:inherit}
 .kpi{position:relative;overflow:hidden}
 .kpi:after{content:"";position:absolute;inset:auto -30px -35px auto;width:120px;height:120px;border-radius:50%;background:rgba(124,58,237,.06)}
 .table-wrap{max-height:62vh;overflow:auto;border-radius:14px}
+  arr.length) + '%';
+ 
+  // แสดงตารางพรีวิวในหน้ารายงาน
+  const preview = document.getElementById('report-preview');
+  preview.innerHTML = `<div class="table-wrap"><table class="w-full text-sm">
+   <thead><tr class="text-xs text-gray-600 bg-gray-50"><th class="px-3 py-3 text-left">จังหวัด</th><th class="px-3 py-3 text-left">สถานี</th><th class="px-3 py-3 text-left">อุปกรณ์</th><th class="px-3 py-3 text-center">สถานะ</th></tr></thead>
+   <tbody>${arr.map(x => `<tr class="border-b"><td class="px-3 py-3">${esc(x.province)}</td><td class="px-3 py-3">${esc(x.station)}</td><td class="px-3 py-3">${esc(x.cat)}</td><td class="px-3 py-3 text-center">${statusBadge(x.status)}</td></tr>`).join('') || '<tr><td colspan="4" class="text-center py-8 text-gray-400">ไม่มีข้อมูลตามเงื่อนไข</td></tr>'}</tbody>
+  </table></div>`;
+}
+
+// --- ส่วนควบคุมการสลับแท็บ (Tabs) ---
+document.querySelectorAll('.nav-btn, .mobile-tab').forEach(btn => {
+  btn.addEventListener('click', e => {
+    const tab = e.target.dataset.tab;
+    
+    // เปลี่ยนสถานะปุ่ม
+    document.querySelectorAll('.nav-btn').forEach(b => b.classList.toggle('active', b.dataset.tab === tab));
+    // ซ่อน/แสดง หน้าจอ
+    document.querySelectorAll('.tab-panel').forEach(p => {
+      if (p.id === 'tab-' + tab) p.classList.remove('hidden');
+      else p.classList.add('hidden');
+    });
+    
+    // โหลดข้อมูลตามหน้าที่เปิด
+    if(tab === 'dashboard') { updateKPIs(); renderCharts(); renderProvinceSummary(); renderAttention(); }
+    if(tab === 'work') renderWorkList();
+    if(tab === 'report') renderReport();
+  });
+});
+
+// --- ส่วนควบคุมระบบค้นหาและกรองข้อมูล ---
+['search', 'filter-province', 'filter-category', 'filter-status'].forEach(id => {
+  document.getElementById(id)?.addEventListener('input', renderWorkList);
+  document.getElementById(id)?.addEventListener('change', renderWorkList);
+});
+
+['report-province', 'report-category', 'report-status'].forEach(id => {
+  document.getElementById(id)?.addEventListener('change', renderReport);
+});
+
+// --- ส่วนควบคุม Modal การจัดการงาน ---
+function openModal(id) {
+  activeItemId = id;
+  const item = data.find(x => x.id === id);
+  if(!item) return;
+  
+  document.getElementById('modal-subtitle').textContent = `${item.station} • ${item.cat}`;
+  document.getElementById('modal-info').innerHTML = `<b>อุปกรณ์:</b> ${item.model} <br> <b>อะไหล่:</b> ${item.part} <br> <b>S/N:</b> ${item.serial}`;
+  document.getElementById('modal-status').value = item.status || 'รอดำเนินการ';
+  document.getElementById('modal-date').value = item.date || '';
+  document.getElementById('modal-note').value = item.note || '';
+  
+  const modal = document.getElementById('work-modal');
+  modal.classList.remove('hidden');
+  modal.classList.add('flex');
+}
+
+document.getElementById('modal-close').addEventListener('click', () => {
+  document.getElementById('work-modal').classList.remove('flex');
+  document.getElementById('work-modal').classList.add('hidden');
+});
+
+document.getElementById('modal-cancel').addEventListener('click', () => document.getElementById('modal-close').click());
+
+document.getElementById('modal-save').addEventListener('click', () => {
+  const item = data.find(x => x.id === activeItemId);
+  if(item) {
+    item.status = document.getElementById('modal-status').value;
+    item.date = document.getElementById('modal-date').value;
+    item.note = document.getElementById('modal-note').value;
+    saveData(); // บันทึกลง Local Storage
+    renderWorkList();
+    document.getElementById('modal-close').click();
+  }
+});
+
+// --- เริ่มต้นการทำงานของระบบ (Init) ---
+function init() {
+  data = loadData();
+  initFilters();
+  updateKPIs();
+  renderCharts();
+  renderProvinceSummary();
+  renderAttention();
+}
+
+init();
+</script>
+</body>
+</html>
 .table-wrap table{border-collapse:separate;border-spacing:0;min-width:1120px}
 .table-wrap thead th{position:sticky;top:0;background:#f8fafc;z-index:2}
 .table-wrap th,.table-wrap td{border-bottom:1px solid #eef0f4}
