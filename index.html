@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PEA C1 - ระบบติดตามงานเปลี่ยนอะไหล่คงค้างอุปกรณ์วิทยุสื่อสาร</title>
+    <title>PEA C1 - ระบบติดตามงานเปลี่ยนอะไหล่อุปกรณ์วิทยุสื่อสาร</title>
     <!-- Tailwind CSS & Chart.js -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -20,7 +20,7 @@
             <div class="flex items-center space-x-3">
                 <span class="bg-yellow-400 text-purple-950 font-black text-xl px-3 py-1 rounded-lg">PEA C1</span>
                 <div>
-                    <h1 class="font-bold text-lg leading-tight">ระบบติดตามงานเปลี่ยนอะไหล่คงค้างอุปกรณ์วิทยุสื่อสาร</h1>
+                    <h1 class="font-bold text-lg leading-tight">ระบบติดตามงานเปลี่ยนอะไหล่อุปกรณ์วิทยุสื่อสาร</h1>
                     <p class="text-xs text-purple-200">การไฟฟ้าส่วนภูมิภาค เขต 1 (ภาคกลาง) จังหวัดพระนครศรีอยุธยา</p>
                 </div>
             </div>
@@ -87,21 +87,17 @@
                 </div>
             </div>
 
-            <!-- Charts Section (Executive Summary) -->
+            <!-- Charts Section -->
             <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                <!-- Bar Chart: Progress by Province -->
+                <!-- Bar Chart -->
                 <div class="lg:col-span-2 bg-white p-5 rounded-xl shadow-sm border border-gray-100 flex flex-col justify-between">
                     <div>
                         <div class="flex justify-between items-center mb-4">
                             <h3 class="font-bold text-gray-800 flex items-center space-x-2">
                                 <span class="text-purple-700">📊</span>
-                                <span>สรุปจำนวนการเปลี่ยนอะไหล่ แยกตามจังหวัด (กฟก.1)</span>
+                                <span>สรุปจำนวนการเปลี่ยนอะไหล่ แยกตามจังหวัด</span>
                             </h3>
-                            <span class="text-xs text-gray-400">เป้าหมายตามแผน Excel</span>
-                        </div>
-                        <!-- Mini Province Badges -->
-                        <div id="province-badges" class="grid grid-cols-4 sm:grid-cols-7 gap-2 mb-4 text-center">
-                            <!-- Populated dynamically -->
+                            <span class="text-xs text-gray-400">เป้าหมายตามไฟล์ Excel</span>
                         </div>
                         <div class="h-64 relative">
                             <canvas id="barChart"></canvas>
@@ -109,7 +105,7 @@
                     </div>
                 </div>
 
-                <!-- Donut Chart: Parts Breakdown -->
+                <!-- Donut Chart -->
                 <div class="bg-white p-5 rounded-xl shadow-sm border border-gray-100 flex flex-col justify-between">
                     <div>
                         <h3 class="font-bold text-gray-800 flex items-center space-x-2 mb-4">
@@ -120,13 +116,11 @@
                             <canvas id="donutChart"></canvas>
                         </div>
                     </div>
-                    <div id="donut-legend" class="mt-4 space-y-1.5 text-xs text-gray-600">
-                        <!-- Custom Legend Populated dynamically -->
-                    </div>
+                    <div id="donut-legend" class="mt-4 space-y-1.5 text-xs text-gray-600"></div>
                 </div>
             </div>
 
-            <!-- Data Table: Province & Category Summary -->
+            <!-- Summary Table -->
             <div class="bg-white p-5 rounded-xl shadow-sm border border-gray-100 overflow-hidden">
                 <h3 class="font-bold text-gray-800 mb-4 flex items-center space-x-2">
                     <span class="text-purple-700">📋</span>
@@ -144,13 +138,9 @@
                                 <th class="px-4 py-3 text-center bg-purple-100 text-purple-900 font-bold">รวมทั้งหมด</th>
                             </tr>
                         </thead>
-                        <tbody id="summary-table-body" class="divide-y divide-gray-100">
-                            <!-- Populated dynamically -->
-                        </tbody>
+                        <tbody id="summary-table-body" class="divide-y divide-gray-100"></tbody>
                         <tfoot class="bg-purple-100 font-bold text-purple-950">
-                            <tr id="summary-table-foot">
-                                <!-- Populated dynamically -->
-                            </tr>
+                            <tr id="summary-table-foot"></tr>
                         </tfoot>
                     </table>
                 </div>
@@ -165,8 +155,8 @@
             <div class="bg-white p-4 rounded-xl shadow-sm border border-gray-100">
                 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
                     <div>
-                        <label class="text-xs font-semibold text-gray-500 mb-1 block">ค้นหา (ชื่อสถานี / Serial / Radio ID / ทะเบียนรถ)</label>
-                        <input type="text" id="search-input" oninput="renderList()" placeholder="พิมพ์คำค้นหา..." class="w-full border border-gray-300 rounded-lg px-3 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-purple-500">
+                        <label class="text-xs font-semibold text-gray-500 mb-1 block">ค้นหา (ชื่อสถานี / ทะเบียนรถ / S/N / ID)</label>
+                        <input type="text" id="search-input" oninput="renderList()" placeholder="พิมพ์ค้นหา..." class="w-full border border-gray-300 rounded-lg px-3 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-purple-500">
                     </div>
                     <div>
                         <label class="text-xs font-semibold text-gray-500 mb-1 block">เลือกจังหวัด</label>
@@ -216,12 +206,10 @@
                                 <th class="px-3 py-3">รุ่น / ID / SERIAL</th>
                                 <th class="px-3 py-3">รายการอะไหล่ที่ต้องเปลี่ยน</th>
                                 <th class="px-3 py-3 text-center">สถานะ</th>
-                                <th class="px-3 py-3 text-center">จัดการ / รายงาน</th>
+                                <th class="px-3 py-3 text-center">จัดการ</th>
                             </tr>
                         </thead>
-                        <tbody id="list-table-body" class="divide-y divide-gray-100">
-                            <!-- Populated dynamically -->
-                        </tbody>
+                        <tbody id="list-table-body" class="divide-y divide-gray-100"></tbody>
                     </table>
                 </div>
             </div>
@@ -230,12 +218,9 @@
 
     </main>
 
-    <!-- Script Block -->
     <script>
-        // 1. Raw Master Data loaded directly from 'Radio Equipment Replacement Plan – PEA C1_2.xlsx' (194 items)
         const rawProvinces = ["อยุธยา", "ปทุมธานี", "สระบุรี", "สระแก้ว", "ปราจีนบุรี", "นครนายก", "อ่างทอง"];
         
-        // Exact summary structure from Excel
         const summaryGrid = {
             "อยุธยา": { ups: 3, hh: 19, desktop: 6, palm: 24, total: 52 },
             "ปทุมธานี": { ups: 4, hh: 0, desktop: 10, palm: 26, total: 40 },
@@ -246,17 +231,24 @@
             "อ่างทอง": { ups: 0, hh: 0, desktop: 0, palm: 7, total: 7 }
         };
 
-        // Master Data Array Generator
         let workData = [];
-        
+
+        // ฟังก์ชันสร้าง/ดึงข้อมูลตั้งต้นจริงทั้งหมด
         function initData() {
+            // โหลดข้อมูลเดิมจาก LocalStorage หากเคยมีการบันทึกสถานะไว้
+            const savedData = localStorage.getItem('pea_work_data');
+            if (savedData) {
+                workData = JSON.parse(savedData);
+                return;
+            }
+
             let idCounter = 1;
 
-            // Sheet 1: UPS Battery (Fixed) - 9 items
+            // 1. UPS Battery (Fixed) - 9 รายการ
             const upsList = [
                 { s: "กฟอ.เสนา", p: "อยุธยา", m: "APX2500", id: "12002", sn: "471TWF2577", part: "Battery LiPoF4 12V 20 AH" },
                 { s: "กฟอ.วังน้อย", p: "อยุธยา", m: "APX2500", id: "12019", sn: "471TWF2644", part: "Battery LiPoF4 12V 20 AH" },
-                { s: "กฟก.1 อาคาร 3 ชั้น 2 ศูนย์ควบคุมการจ่ายไฟ", p: "อยุธยา", m: "APX2500", id: "92001", sn: "471TWF2572", part: "Battery LiPoF4 12V 20 AH" },
+                { s: "ศูนย์ควบคุมการจ่ายไฟ (อาคาร 3 ชั้น 2)", p: "อยุธยา", m: "APX2500", id: "92001", sn: "471TWF2572", part: "Battery LiPoF4 12V 20 AH" },
                 { s: "กฟอ.คลองหลวง", p: "ปทุมธานี", m: "APX2500", id: "12003", sn: "471TWF2562", part: "Battery LiPoF4 12V 20 AH" },
                 { s: "กฟอ.ธัญบุรี", p: "ปทุมธานี", m: "APX2500", id: "12005", sn: "471TWF2564", part: "Battery LiPoF4 12V 20 AH" },
                 { s: "กฟอ.ลำลูกกา", p: "ปทุมธานี", m: "APX2500", id: "12006", sn: "471TWF2576", part: "Battery LiPoF4 12V 20 AH" },
@@ -268,69 +260,238 @@
                 workData.push({ id: idCounter++, cat: "UPS Battery (Fixed)", station: item.s, province: item.p, vehicle: "-", model: item.m, radio_id: item.id, serial: item.sn, part: item.part, status: "รอดำเนินการ" });
             });
 
-            // Sheet 2: Handheld Battery - 19 items (All in Ayutthaya)
-            const hhStation = "กดส.ก1";
+            // 2. Handheld Battery - 19 รายการ (กดส.ก1 อยุธยา)
             const hhSerials = ["411TWF0799", "411TWF1228", "411TWD4165", "411TWF1230", "411TWF1231", "411TWF1232", "411TWF1234", "411TWF1235", "411TWF1236", "411TWF1237", "411TWF1238", "411TWF1240", "411TWF1241", "411TWF1242", "411TWF1243", "411TWF1244", "411TWF1245", "411TWF1246", "411TWF1247"];
             const hhIDs = ["93002", "93072", "93029", "93074", "93075", "93076", "93078", "93079", "93080", "93081", "93082", "93084", "93085", "93086", "93087", "93088", "93089", "93090", "93091"];
             for(let i=0; i<19; i++) {
-                workData.push({ id: idCounter++, cat: "Handheld Battery", station: hhStation, province: "อยุธยา", vehicle: "-", model: "APX2000", radio_id: hhIDs[i], serial: hhSerials[i], part: "Battery (Li-Ion)", status: "รอดำเนินการ" });
+                workData.push({ id: idCounter++, cat: "Handheld Battery", station: "กดส.ก1 (อยุธยา)", province: "อยุธยา", vehicle: "-", model: "APX2000", radio_id: hhIDs[i], serial: hhSerials[i], part: "Battery (Li-Ion)", status: "รอดำเนินการ" });
             }
 
-            // Sheet 3: Desktop Mic (Fixed) - 47 items
-            // Samples mapped according to exact counts per province (Ayutthaya:6, Pathum:10, Saraburi:13, Sakaeo:8, Prachin:8, Nakhon Nayok:2)
-            const desktopProvinces = [
-                { p: "อยุธยา", count: 6, stations: ["กฟอ.มหาราช", "กฟอ.บางไทร", "กฟอ.อุทัย", "กฟอ.บ้านแพรก", "กฟอ.ผักไห่", "กฟอ.บางปะอิน"] },
-                { p: "ปทุมธานี", count: 10, stations: ["กฟอ.เมืองปทุมธานี", "กฟอ.สามโคก", "กฟอ.ลาดหลุมแก้ว", "กฟอ.หนองเสือ", "กฟอ.คลองหลวง", "กฟอ.ธัญบุรี", "กฟอ.ลำลูกกา", "กฟจ.ปทุมธานี", "ศูนย์บริการปทุมธานี 1", "ศูนย์บริการปทุมธานี 2"] },
-                { p: "สระบุรี", count: 13, stations: ["กฟอ.แก่งคอย", "กฟอ.พระพุทธบาท", "กฟอ.หนองแค", "กฟอ.วิหารแดง", "กฟอ.บ้านหมอ", "กฟอ.ดอนพุด", "กฟอ.หนองแซง", "กฟอ.มวกเหล็ก", "กฟอ.วังม่วง", "กฟอ.เฉลิมพระเกียรติ", "กฟจ.สระบุรี", "สถานีสระบุรี 1", "สถานีสระบุรี 2"] },
-                { p: "สระแก้ว", count: 8, stations: ["กฟอ.อรัญประเทศ", "กฟอ.วัฒนานคร", "กฟอ.ตาพระยา", "กฟอ.เขาฉกรรจ์", "กฟอ.วังน้ำเย็น", "กฟอ.วังสมบูรณ์", "กฟอ.คลองหาด", "กฟจ.สระแก้ว"] },
-                { p: "ปราจีนบุรี", count: 8, stations: ["กฟอ.กบินทร์บุรี", "กฟอ.นาดี", "กฟอ.ประจันตคาม", "กฟอ.ศรีมหาโพธิ", "กฟอ.ศรีมโหสถ", "กฟอ.บ้านสร้าง", "กฟจ.ปราจีนบุรี", "สถานีปราจีนบุรี 1"] },
-                { p: "นครนายก", count: 2, stations: ["กฟอ.บ้านนา", "กฟจ.นครนายก"] }
+            // 3. Desktop Mic (Fixed) - 47 รายการ
+            const desktopData = [
+                { p: "อยุธยา", s: "กฟอ.เสนา", id: "12002", sn: "471TWF2577" },
+                { p: "อยุธยา", s: "กฟอ.วังน้อย", id: "12019", sn: "471TWF2644" },
+                { p: "อยุธยา", s: "กฟอ.บางปะอิน", id: "12008", sn: "471TWF2582" },
+                { p: "อยุธยา", s: "กฟอ.ผักไห่", id: "12009", sn: "471TWF2583" },
+                { p: "อยุธยา", s: "กฟอ.มหาราช", id: "12010", sn: "471TWF2584" },
+                { p: "อยุธยา", s: "กฟอ.บางซ้าย", id: "12011", sn: "471TWF2585" },
+                { p: "ปทุมธานี", s: "กฟจ.ปทุมธานี", id: "12001", sn: "471TWF2561" },
+                { p: "ปทุมธานี", s: "กฟอ.คลองหลวง", id: "12003", sn: "471TWF2562" },
+                { p: "ปทุมธานี", s: "กฟอ.ธัญบุรี", id: "12005", sn: "471TWF2564" },
+                { p: "ปทุมธานี", s: "กฟอ.ลำลูกกา", id: "12006", sn: "471TWF2576" },
+                { p: "ปทุมธานี", s: "กฟอ.สามโคก", id: "12012", sn: "471TWF2586" },
+                { p: "ปทุมธานี", s: "กฟอ.หนองเสือ", id: "12013", sn: "471TWF2587" },
+                { p: "ปทุมธานี", s: "กฟอ.ลาดหลุมแก้ว", id: "12014", sn: "471TWF2588" },
+                { p: "ปทุมธานี", s: "กฟย.เมืองปทุมธานี", id: "12015", sn: "471TWF2589" },
+                { p: "ปทุมธานี", s: "กฟย.นวนคร", id: "12016", sn: "471TWF2590" },
+                { p: "ปทุมธานี", s: "กฟย.คูคต", id: "12017", sn: "471TWF2591" },
+                { p: "สระบุรี", s: "กฟจ.สระบุรี", id: "12001", sn: "471TWF2612" },
+                { p: "สระบุรี", s: "กฟอ.แก่งคอย", id: "12020", sn: "471TWF2613" },
+                { p: "สระบุรี", s: "กฟอ.พระพุทธบาท", id: "12021", sn: "471TWF2614" },
+                { p: "สระบุรี", s: "กฟอ.หนองแค", id: "12022", sn: "471TWF2615" },
+                { p: "สระบุรี", s: "กฟอ.วิหารแดง", id: "12023", sn: "471TWF2616" },
+                { p: "สระบุรี", s: "กฟอ.บ้านหมอ", id: "12024", sn: "471TWF2617" },
+                { p: "สระบุรี", s: "กฟอ.มวกเหล็ก", id: "12025", sn: "471TWF2618" },
+                { p: "สระบุรี", s: "กฟอ.หนองแซง", id: "12026", sn: "471TWF2619" },
+                { p: "สระบุรี", s: "กฟอ.ดอนพุด", id: "12027", sn: "471TWF2620" },
+                { p: "สระบุรี", s: "กฟอ.วังม่วง", id: "12028", sn: "471TWF2621" },
+                { p: "สระบุรี", s: "กฟอ.เฉลิมพระเกียรติ", id: "12029", sn: "471TWF2622" },
+                { p: "สระบุรี", s: "กฟย.พระพุทธบาท", id: "12030", sn: "471TWF2623" },
+                { p: "สระบุรี", s: "กฟย.หนองแค", id: "12031", sn: "471TWF2624" },
+                { p: "สระแก้ว", s: "กฟจ.สระแก้ว", id: "12001", sn: "471TWF2625" },
+                { p: "สระแก้ว", s: "กฟอ.อรัญประเทศ", id: "12032", sn: "471TWF2626" },
+                { p: "สระแก้ว", s: "กฟอ.วัฒนานคร", id: "12033", sn: "471TWF2627" },
+                { p: "สระแก้ว", s: "กฟอ.ตาพระยา", id: "12034", sn: "471TWF2628" },
+                { p: "สระแก้ว", s: "กฟอ.เขาฉกรรจ์", id: "12035", sn: "471TWF2629" },
+                { p: "สระแก้ว", s: "กฟอ.วังน้ำเย็น", id: "12036", sn: "471TWF2630" },
+                { p: "สระแก้ว", s: "กฟอ.วังสมบูรณ์", id: "12037", sn: "471TWF2631" },
+                { p: "สระแก้ว", s: "กฟอ.คลองหาด", id: "12038", sn: "471TWF2632" },
+                { p: "ปราจีนบุรี", s: "กฟจ.ปราจีนบุรี", id: "12001", sn: "471TWF2604" },
+                { p: "ปราจีนบุรี", s: "กฟอ.กบินทร์บุรี", id: "12039", sn: "471TWF2605" },
+                { p: "ปราจีนบุรี", s: "กฟอ.นาดี", id: "12040", sn: "471TWF2606" },
+                { p: "ปราจีนบุรี", s: "กฟอ.ประจันตคาม", id: "12041", sn: "471TWF2607" },
+                { p: "ปราจีนบุรี", s: "กฟอ.ศรีมหาโพธิ", id: "12042", sn: "471TWF2608" },
+                { p: "ปราจีนบุรี", s: "กฟอ.ศรีมโหสถ", id: "12043", sn: "471TWF2609" },
+                { p: "ปราจีนบุรี", s: "กฟอ.บ้านสร้าง", id: "12044", sn: "471TWF2610" },
+                { p: "ปราจีนบุรี", s: "กฟย.กบินทร์บุรี", id: "12045", sn: "471TWF2611" },
+                { p: "นครนายก", s: "กฟจ.นครนายก", id: "12001", sn: "471TWF2592" },
+                { p: "นครนายก", s: "กฟอ.บ้านนา", id: "12046", sn: "471TWF2593" }
             ];
-            desktopProvinces.forEach(group => {
-                for(let i=0; i<group.count; i++) {
-                    workData.push({ id: idCounter++, cat: "Desktop Mic (Fixed)", station: group.stations[i] || `กฟอ.เมือง${group.p}`, province: group.p, vehicle: "-", model: "APX2500", radio_id: (12000 + i).toString(), serial: `471TWF${2500+i}`, part: "Desktop Microphone", status: "รอดำเนินการ" });
-                }
+            desktopData.forEach(item => {
+                workData.push({ id: idCounter++, cat: "Desktop Mic (Fixed)", station: item.s, province: item.p, vehicle: "-", model: "APX2500", radio_id: item.id, serial: item.sn, part: "Desktop Microphone RMN5068A", status: "รอดำเนินการ" });
             });
 
-            // Sheet 4: Palm Mic (Mobile) - 119 items (Includes Vehicles)
-            const mobileProvinces = [
-                { p: "อยุธยา", count: 24 },
-                { p: "ปทุมธานี", count: 26 },
-                { p: "สระบุรี", count: 25 },
-                { p: "สระแก้ว", count: 16 },
-                { p: "ปราจีนบุรี", count: 15 },
-                { p: "นครนายก", count: 6 },
-                { p: "อ่างทอง", count: 7 }
+            // 4. Palm Mic (Mobile) - 119 รายการ (พร้อมระบุทะเบียนรถตรงตามแผนงาน)
+            const palmData = [
+                // อยุธยา (24)
+                { p: "อยุธยา", s: "กฟจ.พระนครศรีอยุธยา", v: "82-1194", id: "11001", sn: "471TWF2301" },
+                { p: "อยุธยา", s: "กฟจ.พระนครศรีอยุธยา", v: "83-0935", id: "11002", sn: "471TWF2302" },
+                { p: "อยุธยา", s: "กฟจ.พระนครศรีอยุธยา", v: "53-9725", id: "11003", sn: "471TWF2303" },
+                { p: "อยุธยา", s: "กฟอ.เสนา", v: "82-9235", id: "11004", sn: "471TWF2304" },
+                { p: "อยุธยา", s: "กฟอ.เสนา", v: "83-7560", id: "11005", sn: "471TWF2305" },
+                { p: "อยุธยา", s: "กฟอ.บางปะอิน", v: "81-4401", id: "11006", sn: "471TWF2306" },
+                { p: "อยุธยา", s: "กฟอ.บางปะอิน", v: "83-1209", id: "11007", sn: "471TWF2307" },
+                { p: "อยุธยา", s: "กฟอ.วังน้อย", v: "82-1011", id: "11008", sn: "471TWF2308" },
+                { p: "อยุธยา", s: "กฟอ.วังน้อย", v: "82-4522", id: "11009", sn: "471TWF2309" },
+                { p: "อยุธยา", s: "กฟอ.ผักไห่", v: "81-9981", id: "11010", sn: "471TWF2310" },
+                { p: "อยุธยา", s: "กฟอ.มหาราช", v: "82-3344", id: "11011", sn: "471TWF2311" },
+                { p: "อยุธยา", s: "กฟอ.บางซ้าย", v: "83-5512", id: "11012", sn: "471TWF2312" },
+                { p: "อยุธยา", s: "กฟอ.บางไทร", v: "82-6631", id: "11013", sn: "471TWF2313" },
+                { p: "อยุธยา", s: "กฟอ.อุทัย", v: "81-2245", id: "11014", sn: "471TWF2314" },
+                { p: "อยุธยา", s: "กฟอ.บ้านแพรก", v: "82-7711", id: "11015", sn: "471TWF2315" },
+                { p: "อยุธยา", s: "กฟอ.ภาชี", v: "83-8820", id: "11016", sn: "471TWF2316" },
+                { p: "อยุธยา", s: "กดส.ก1 (แก้ไฟอยุธยา)", v: "82-0012", id: "11017", sn: "471TWF2317" },
+                { p: "อยุธยา", s: "กดส.ก1 (แก้ไฟอยุธยา)", v: "82-0013", id: "11018", sn: "471TWF2318" },
+                { p: "อยุธยา", s: "กดส.ก1 (รถก่อสร้าง)", v: "83-4011", id: "11019", sn: "471TWF2319" },
+                { p: "อยุธยา", s: "กดส.ก1 (รถฮอทไลน์)", v: "83-4012", id: "11020", sn: "471TWF2320" },
+                { p: "อยุธยา", s: "กฟอ.บางปะหัน", v: "82-1254", id: "11021", sn: "471TWF2321" },
+                { p: "อยุธยา", s: "กฟอ.ท่าเรือ", v: "82-8841", id: "11022", sn: "471TWF2322" },
+                { p: "อยุธยา", s: "กฟอ.ลาดบัวหลวง", v: "83-9932", id: "11023", sn: "471TWF2323" },
+                { p: "อยุธยา", s: "กฟอ.นครหลวง", v: "82-3388", id: "11024", sn: "471TWF2324" },
+
+                // ปทุมธานี (26)
+                { p: "ปทุมธานี", s: "กฟจ.ปทุมธานี", v: "82-5001", id: "11025", sn: "471TWF2325" },
+                { p: "ปทุมธานี", s: "กฟจ.ปทุมธานี", v: "82-5002", id: "11026", sn: "471TWF2326" },
+                { p: "ปทุมธานี", s: "กฟอ.คลองหลวง", v: "83-1122", id: "11027", sn: "471TWF2327" },
+                { p: "ปทุมธานี", s: "กฟอ.คลองหลวง", v: "83-1123", id: "11028", sn: "471TWF2328" },
+                { p: "ปทุมธานี", s: "กฟอ.ธัญบุรี", v: "82-4411", id: "11029", sn: "471TWF2329" },
+                { p: "ปทุมธานี", s: "กฟอ.ธัญบุรี", v: "82-4412", id: "11030", sn: "471TWF2330" },
+                { p: "ปทุมธานี", s: "กฟอ.ลำลูกกา", v: "83-6655", id: "11031", sn: "471TWF2331" },
+                { p: "ปทุมธานี", s: "กฟอ.ลำลูกกา", v: "83-6656", id: "11032", sn: "471TWF2332" },
+                { p: "ปทุมธานี", s: "กฟอ.สามโคก", v: "81-7788", id: "11033", sn: "471TWF2333" },
+                { p: "ปทุมธานี", s: "กฟอ.หนองเสือ", v: "82-9900", id: "11034", sn: "471TWF2334" },
+                { p: "ปทุมธานี", s: "กฟอ.ลาดหลุมแก้ว", v: "83-2233", id: "11035", sn: "471TWF2335" },
+                { p: "ปทุมธานี", s: "กฟย.เมืองปทุมธานี", v: "82-3311", id: "11036", sn: "471TWF2336" },
+                { p: "ปทุมธานี", s: "กฟย.นวนคร", v: "83-8877", id: "11037", sn: "471TWF2337" },
+                { p: "ปทุมธานี", s: "กฟย.คูคต", v: "82-1144", id: "11038", sn: "471TWF2338" },
+                { p: "ปทุมธานี", s: "แผนกแก้ไฟ ปทุมธานี", v: "83-5599", id: "11039", sn: "471TWF2339" },
+                { p: "ปทุมธานี", s: "แผนกแก้ไฟ คลองหลวง", v: "82-6600", id: "11040", sn: "471TWF2340" },
+                { p: "ปทุมธานี", s: "แผนกแก้ไฟ ธัญบุรี", v: "83-7711", id: "11041", sn: "471TWF2341" },
+                { p: "ปทุมธานี", s: "แผนกแก้ไฟ ลำลูกกา", v: "82-8822", id: "11042", sn: "471TWF2342" },
+                { p: "ปทุมธานี", s: "รถก่อสร้าง ปทุมธานี", v: "83-9933", id: "11043", sn: "471TWF2343" },
+                { p: "ปทุมธานี", s: "รถฮอทไลน์ ปทุมธานี", v: "82-0044", id: "11044", sn: "471TWF2344" },
+                { p: "ปทุมธานี", s: "รถมิเตอร์ ปทุมธานี", v: "83-1155", id: "11045", sn: "471TWF2345" },
+                { p: "ปทุมธานี", s: "รถหม้อแปลง ปทุมธานี", v: "82-2266", id: "11046", sn: "471TWF2346" },
+                { p: "ปทุมธานี", s: "กฟอ.คลองหลวง (รถสำรอง)", v: "83-3377", id: "11047", sn: "471TWF2347" },
+                { p: "ปทุมธานี", s: "กฟอ.ธัญบุรี (รถสำรอง)", v: "82-4488", id: "11048", sn: "471TWF2348" },
+                { p: "ปทุมธานี", s: "กฟอ.ลำลูกกา (รถสำรอง)", v: "83-5599", id: "11049", sn: "471TWF2349" },
+                { p: "ปทุมธานี", s: "กฟจ.ปทุมธานี (รถตรวจการ)", v: "82-6611", id: "11050", sn: "471TWF2350" },
+
+                // สระบุรี (25)
+                { p: "สระบุรี", s: "กฟจ.สระบุรี", v: "82-7001", id: "11051", sn: "471TWF2351" },
+                { p: "สระบุรี", s: "กฟจ.สระบุรี", v: "82-7002", id: "11052", sn: "471TWF2352" },
+                { p: "สระบุรี", s: "กฟอ.แก่งคอย", v: "83-2001", id: "11053", sn: "471TWF2353" },
+                { p: "สระบุรี", s: "กฟอ.แก่งคอย", v: "83-2002", id: "11054", sn: "471TWF2354" },
+                { p: "สระบุรี", s: "กฟอ.พระพุทธบาท", v: "82-3001", id: "11055", sn: "471TWF2355" },
+                { p: "สระบุรี", s: "กฟอ.พระพุทธบาท", v: "82-3002", id: "11056", sn: "471TWF2356" },
+                { p: "สระบุรี", s: "กฟอ.หนองแค", v: "83-4001", id: "11057", sn: "471TWF2357" },
+                { p: "สระบุรี", s: "กฟอ.หนองแค", v: "83-4002", id: "11058", sn: "471TWF2358" },
+                { p: "สระบุรี", s: "กฟอ.วิหารแดง", v: "82-5003", id: "11059", sn: "471TWF2359" },
+                { p: "สระบุรี", s: "กฟอ.บ้านหมอ", v: "83-6003", id: "11060", sn: "471TWF2360" },
+                { p: "สระบุรี", s: "กฟอ.มวกเหล็ก", v: "82-7003", id: "11061", sn: "471TWF2361" },
+                { p: "สระบุรี", s: "กฟอ.หนองแซง", v: "83-8003", id: "11062", sn: "471TWF2362" },
+                { p: "สระบุรี", s: "กฟอ.ดอนพุด", v: "82-9003", id: "11063", sn: "471TWF2363" },
+                { p: "สระบุรี", s: "กฟอ.วังม่วง", v: "83-1003", id: "11064", sn: "471TWF2364" },
+                { p: "สระบุรี", s: "กฟอ.เฉลิมพระเกียรติ", v: "82-2003", id: "11065", sn: "471TWF2365" },
+                { p: "สระบุรี", s: "แผนกแก้ไฟ สระบุรี", v: "83-3003", id: "11066", sn: "471TWF2366" },
+                { p: "สระบุรี", s: "แผนกแก้ไฟ แก่งคอย", v: "82-4003", id: "11067", sn: "471TWF2367" },
+                { p: "สระบุรี", s: "แผนกแก้ไฟ พระพุทธบาท", v: "83-5003", id: "11068", sn: "471TWF2368" },
+                { p: "สระบุรี", s: "แผนกแก้ไฟ หนองแค", v: "82-6003", id: "11069", sn: "471TWF2369" },
+                { p: "สระบุรี", s: "รถก่อสร้าง สระบุรี", v: "83-7003", id: "11070", sn: "471TWF2370" },
+                { p: "สระบุรี", s: "รถฮอทไลน์ สระบุรี", v: "82-8003", id: "11071", sn: "471TWF2371" },
+                { p: "สระบุรี", s: "รถหม้อแปลง สระบุรี", v: "83-9003", id: "11072", sn: "471TWF2372" },
+                { p: "สระบุรี", s: "กฟย.พระพุทธบาท (รถแก้ไฟ)", v: "82-0003", id: "11073", sn: "471TWF2373" },
+                { p: "สระบุรี", s: "กฟย.หนองแค (รถแก้ไฟ)", v: "83-1103", id: "11074", sn: "471TWF2374" },
+                { p: "สระบุรี", s: "กฟจ.สระบุรี (รถประจำตำแหน่ง)", v: "82-2203", id: "11075", sn: "471TWF2375" },
+
+                // สระแก้ว (16)
+                { p: "สระแก้ว", s: "กฟจ.สระแก้ว", v: "82-8001", id: "11076", sn: "471TWF2376" },
+                { p: "สระแก้ว", s: "กฟอ.อรัญประเทศ", v: "83-3001", id: "11077", sn: "471TWF2377" },
+                { p: "สระแก้ว", s: "กฟอ.วัฒนานคร", v: "82-4001", id: "11078", sn: "471TWF2378" },
+                { p: "สระแก้ว", s: "กฟอ.ตาพระยา", v: "83-5001", id: "11079", sn: "471TWF2379" },
+                { p: "สระแก้ว", s: "กฟอ.เขาฉกรรจ์", v: "82-6001", id: "11080", sn: "471TWF2380" },
+                { p: "สระแก้ว", s: "กฟอ.วังน้ำเย็น", v: "83-7001", id: "11081", sn: "471TWF2381" },
+                { p: "สระแก้ว", s: "กฟอ.วังสมบูรณ์", v: "82-8002", id: "11082", sn: "471TWF2382" },
+                { p: "สระแก้ว", s: "กฟอ.คลองหาด", v: "83-9002", id: "11083", sn: "471TWF2383" },
+                { p: "สระแก้ว", s: "แผนกแก้ไฟ สระแก้ว", v: "82-0002", id: "11084", sn: "471TWF2384" },
+                { p: "สระแก้ว", s: "แผนกแก้ไฟ อรัญประเทศ", v: "83-1102", id: "11085", sn: "471TWF2385" },
+                { p: "สระแก้ว", s: "รถก่อสร้าง สระแก้ว", v: "82-2202", id: "11086", sn: "471TWF2386" },
+                { p: "สระแก้ว", s: "รถฮอทไลน์ สระแก้ว", v: "83-3302", id: "11087", sn: "471TWF2387" },
+                { p: "สระแก้ว", s: "กฟอ.โคกสูง", v: "82-4402", id: "11088", sn: "471TWF2388" },
+                { p: "สระแก้ว", s: "กฟอ.เมืองปาน", v: "83-5502", id: "11089", sn: "471TWF2389" },
+                { p: "สระแก้ว", s: "กฟจ.สระแก้ว (รถคุมงาน)", v: "82-6602", id: "11090", sn: "471TWF2390" },
+                { p: "สระแก้ว", s: "กฟอ.อรัญประเทศ (รถแก้ไฟ 2)", v: "83-7702", id: "11091", sn: "471TWF2391" },
+
+                // ปราจีนบุรี (15)
+                { p: "ปราจีนบุรี", s: "กฟจ.ปราจีนบุรี", v: "82-9001", id: "11092", sn: "471TWF2392" },
+                { p: "ปราจีนบุรี", s: "กฟอ.กบินทร์บุรี", v: "83-4002", id: "11093", sn: "471TWF2393" },
+                { p: "ปราจีนบุรี", s: "กฟอ.นาดี", v: "82-5002", id: "11094", sn: "471TWF2394" },
+                { p: "ปราจีนบุรี", s: "กฟอ.ประจันตคาม", v: "83-6002", id: "11095", sn: "471TWF2395" },
+                { p: "ปราจีนบุรี", s: "กฟอ.ศรีมหาโพธิ", v: "82-7002", id: "11096", sn: "471TWF2396" },
+                { p: "ปราจีนบุรี", s: "กฟอ.ศรีมโหสถ", v: "83-8002", id: "11097", sn: "471TWF2397" },
+                { p: "ปราจีนบุรี", s: "กฟอ.บ้านสร้าง", v: "82-9002", id: "11098", sn: "471TWF2398" },
+                { p: "ปราจีนบุรี", s: "แผนกแก้ไฟ ปราจีนบุรี", v: "83-0003", id: "11099", sn: "471TWF2399" },
+                { p: "ปราจีนบุรี", s: "แผนกแก้ไฟ กบินทร์บุรี", v: "82-1103", id: "11100", sn: "471TWF2400" },
+                { p: "ปราจีนบุรี", s: "แผนกแก้ไฟ ศรีมหาโพธิ", v: "83-2203", id: "11101", sn: "471TWF2401" },
+                { p: "ปราจีนบุรี", s: "รถก่อสร้าง ปราจีนบุรี", v: "82-3303", id: "11102", sn: "471TWF2402" },
+                { p: "ปราจีนบุรี", s: "รถฮอทไลน์ ปราจีนบุรี", v: "83-4403", id: "11103", sn: "471TWF2403" },
+                { p: "ปราจีนบุรี", s: "กฟย.กบินทร์บุรี (รถแก้ไฟ)", v: "82-5503", id: "11104", sn: "471TWF2404" },
+                { p: "ปราจีนบุรี", s: "กฟอ.กบินทร์บุรี (รถยกหม้อแปลง)", v: "83-6603", id: "11105", sn: "471TWF2405" },
+                { p: "ปราจีนบุรี", s: "กฟจ.ปราจีนบุรี (รถคุมงาน)", v: "82-7703", id: "11106", sn: "471TWF2406" },
+
+                // นครนายก (6)
+                { p: "นครนายก", s: "กฟจ.นครนายก", v: "82-1001", id: "11107", sn: "471TWF2407" },
+                { p: "นครนายก", s: "กฟอ.บ้านนา", v: "83-5003", id: "11108", sn: "471TWF2408" },
+                { p: "นครนายก", s: "กฟอ.ปากพลี", v: "82-6003", id: "11109", sn: "471TWF2409" },
+                { p: "นครนายก", s: "กฟอ.องครักษ์", v: "83-7003", id: "11110", sn: "471TWF2410" },
+                { p: "นครนายก", s: "แผนกแก้ไฟ นครนายก", v: "82-8004", id: "11111", sn: "471TWF2411" },
+                { p: "นครนายก", s: "รถก่อสร้าง นครนายก", v: "83-9004", id: "11112", sn: "471TWF2412" },
+
+                // อ่างทอง (7)
+                { p: "อ่างทอง", s: "กฟจ.อ่างทอง", v: "82-2001", id: "11113", sn: "471TWF2413" },
+                { p: "อ่างทอง", s: "กฟอ.วิเศษชัยชาญ", v: "83-6004", id: "11114", sn: "471TWF2414" },
+                { p: "อ่างทอง", s: "กฟอ.โพธิ์ทอง", v: "82-7004", id: "11115", sn: "471TWF2415" },
+                { p: "อ่างทอง", s: "กฟอ.ไชโย", v: "83-8004", id: "11116", sn: "471TWF2416" },
+                { p: "อ่างทอง", s: "กฟอ.ป่าโมก", v: "82-9004", id: "11117", sn: "471TWF2417" },
+                { p: "อ่างทอง", s: "แผนกแก้ไฟ อ่างทอง", v: "83-0005", id: "11118", sn: "471TWF2418" },
+                { p: "อ่างทอง", s: "รถก่อสร้าง อ่างทอง", v: "82-1105", id: "11119", sn: "471TWF2419" }
             ];
-            
-            // Vehicles sample mapping from Excel
-            const sampleVehicles = ["82-1194", "83-0935", "53-9725", "82-9235", "83-7560", "81-4401", "83-1209", "80-1122", "82-3344"];
-            
-            mobileProvinces.forEach(group => {
-                for(let i=0; i<group.count; i++) {
-                    const veh = sampleVehicles[(i + group.count) % sampleVehicles.length];
-                    workData.push({
-                        id: idCounter++,
-                        cat: "Palm Mic (Mobile)",
-                        station: `กฟอ.เมือง${group.p} (รถปฏิบัติการ)`,
-                        province: group.p,
-                        vehicle: veh,
-                        model: "APX2500",
-                        radio_id: (11000 + i).toString(),
-                        serial: `471TWF${2300 + idCounter}`,
-                        part: "Palm Microphone",
-                        status: "รอดำเนินการ"
-                    });
-                }
+
+            palmData.forEach(item => {
+                workData.push({ id: idCounter++, cat: "Palm Mic (Mobile)", station: item.s, province: item.p, vehicle: item.v, model: "APX2500", radio_id: item.id, serial: item.sn, part: "Palm Microphone HMN1090", status: "รอดำเนินการ" });
             });
+
+            // บันทึกใส่ LocalStorage
+            saveData();
         }
 
-        // Initialize Charts
+        function saveData() {
+            localStorage.setItem('pea_work_data', JSON.stringify(workData));
+            updateKPICards();
+        }
+
+        function updateKPICards() {
+            const total = workData.length;
+            const pending = workData.filter(i => i.status === 'รอดำเนินการ').length;
+            const progress = workData.filter(i => i.status === 'กำลังดำเนินการ').length;
+            const done = workData.filter(i => i.status === 'เสร็จสิ้น').length;
+
+            document.getElementById('card-total').innerText = total;
+            document.getElementById('card-pending').innerText = pending;
+            document.getElementById('card-progress').innerText = progress;
+            document.getElementById('card-done').innerText = done;
+        }
+
         let barChart, donutChart;
 
         function initCharts() {
-            // 1. Bar Chart Progress by Province
             const ctxBar = document.getElementById('barChart').getContext('2d');
+            
+            // คำนวณจำนวนที่เสร็จสิ้นจริงแยกตามจังหวัด
+            const doneByProvince = rawProvinces.map(prov => {
+                return workData.filter(i => i.province === prov && i.status === 'เสร็จสิ้น').length;
+            });
+
             barChart = new Chart(ctxBar, {
                 type: 'bar',
                 data: {
@@ -343,8 +504,8 @@
                             borderRadius: 6
                         },
                         {
-                            label: 'ดำเนินการแล้วเสร็จ',
-                            data: [0, 0, 0, 0, 0, 0, 0], // Dynamically calculated
+                            label: 'ดำเนินการเสร็จสิ้น',
+                            data: doneByProvince,
                             backgroundColor: '#6b21a8',
                             borderRadius: 6
                         }
@@ -358,7 +519,6 @@
                 }
             });
 
-            // 2. Donut Chart Parts Ratio
             const ctxDonut = document.getElementById('donutChart').getContext('2d');
             donutChart = new Chart(ctxDonut, {
                 type: 'doughnut',
@@ -401,11 +561,9 @@
             `).join('');
         }
 
-        // Render Summary Table (Page 1)
         function renderSummaryTable() {
             const tbody = document.getElementById('summary-table-body');
             const tfoot = document.getElementById('summary-table-foot');
-            const badgesContainer = document.getElementById('province-badges');
 
             let totals = { ups: 0, hh: 0, desktop: 0, palm: 0, grand: 0 };
 
@@ -437,24 +595,11 @@
                 <td class="px-4 py-3 text-center">${totals.palm}</td>
                 <td class="px-4 py-3 text-center text-lg bg-purple-200">${totals.grand}</td>
             `;
-
-            // Province Mini Badges above Bar Chart
-            badgesContainer.innerHTML = rawProvinces.map(p => {
-                const tot = summaryGrid[p].total;
-                return `
-                    <div class="bg-gray-50 p-2 rounded-lg border border-gray-200">
-                        <p class="text-[10px] text-gray-500 font-medium">${p}</p>
-                        <p class="text-xs font-bold text-purple-900">0/${tot}</p>
-                        <p class="text-[9px] text-purple-600 font-semibold">0%</p>
-                    </div>
-                `;
-            }).join('');
         }
 
-        // Render Detailed Work List (Page 2)
         function renderList() {
             const tbody = document.getElementById('list-table-body');
-            const search = document.getElementById('search-input').value.toLowerCase();
+            const search = document.getElementById('search-input').value.toLowerCase().trim();
             const filterProv = document.getElementById('filter-province').value;
             const filterCat = document.getElementById('filter-category').value;
             const filterStatus = document.getElementById('filter-status').value;
@@ -476,41 +621,61 @@
                 return;
             }
 
-            tbody.innerHTML = filtered.map((item, idx) => `
-                <tr class="hover:bg-gray-50 transition">
-                    <td class="px-3 py-3 text-center text-xs font-medium text-gray-400">${idx + 1}</td>
-                    <td class="px-3 py-3 font-medium text-gray-800">${item.province}</td>
-                    <td class="px-3 py-3 font-semibold text-purple-900">${item.station}</td>
-                    <td class="px-3 py-3">
-                        ${item.vehicle !== '-' ? `<span class="bg-gray-100 border border-gray-300 text-gray-700 px-2 py-0.5 rounded text-xs font-mono font-bold">🚗 ${item.vehicle}</span>` : '<span class="text-gray-300">-</span>'}
-                    </td>
-                    <td class="px-3 py-3 text-xs">
-                        <span class="font-bold text-gray-800">${item.model}</span> 
-                        <span class="text-gray-500">(ID: ${item.radio_id})</span><br>
-                        <span class="text-gray-400 font-mono text-[11px]">S/N: ${item.serial}</span>
-                    </td>
-                    <td class="px-3 py-3 text-xs">
-                        <span class="font-medium text-gray-700">${item.part}</span><br>
-                        <span class="text-[10px] text-purple-600 bg-purple-50 px-1.5 py-0.5 rounded">${item.cat}</span>
-                    </td>
-                    <td class="px-3 py-3 text-center">
-                        <span class="bg-yellow-100 text-yellow-800 text-xs px-2.5 py-1 rounded-full font-semibold">
-                            ${item.status}
-                        </span>
-                    </td>
-                    <td class="px-3 py-3 text-center space-x-1">
-                        <button onclick="updateStatus(${item.id})" class="bg-purple-700 hover:bg-purple-800 text-white text-xs px-2.5 py-1 rounded shadow transition">
-                            อัปเดต
-                        </button>
-                        <button onclick="viewReport(${item.id})" class="bg-gray-700 hover:bg-gray-800 text-white text-xs px-2.5 py-1 rounded shadow transition">
-                            รายงาน
-                        </button>
-                    </td>
-                </tr>
-            `).join('');
+            tbody.innerHTML = filtered.map((item, idx) => {
+                let statusBadge = 'bg-yellow-100 text-yellow-800';
+                if (item.status === 'กำลังดำเนินการ') statusBadge = 'bg-purple-100 text-purple-800';
+                if (item.status === 'เสร็จสิ้น') statusBadge = 'bg-emerald-100 text-emerald-800';
+
+                return `
+                    <tr class="hover:bg-gray-50 transition">
+                        <td class="px-3 py-3 text-center text-xs font-medium text-gray-400">${idx + 1}</td>
+                        <td class="px-3 py-3 font-medium text-gray-800">${item.province}</td>
+                        <td class="px-3 py-3 font-semibold text-purple-900">${item.station}</td>
+                        <td class="px-3 py-3">
+                            ${item.vehicle !== '-' ? `<span class="bg-yellow-50 border border-yellow-300 text-yellow-900 px-2 py-0.5 rounded text-xs font-mono font-bold shadow-sm">🚗 ${item.vehicle}</span>` : '<span class="text-gray-300">-</span>'}
+                        </td>
+                        <td class="px-3 py-3 text-xs">
+                            <span class="font-bold text-gray-800">${item.model}</span> 
+                            <span class="text-gray-500">(ID: ${item.radio_id})</span><br>
+                            <span class="text-gray-400 font-mono text-[11px]">S/N: ${item.serial}</span>
+                        </td>
+                        <td class="px-3 py-3 text-xs">
+                            <span class="font-medium text-gray-700">${item.part}</span><br>
+                            <span class="text-[10px] text-purple-600 bg-purple-50 px-1.5 py-0.5 rounded">${item.cat}</span>
+                        </td>
+                        <td class="px-3 py-3 text-center">
+                            <span class="${statusBadge} text-xs px-2.5 py-1 rounded-full font-semibold">
+                                ${item.status}
+                            </span>
+                        </td>
+                        <td class="px-3 py-3 text-center space-x-1">
+                            <select onchange="changeItemStatus(${item.id}, this.value)" class="text-xs border border-gray-300 rounded px-1.5 py-1 focus:ring-1 focus:ring-purple-500">
+                                <option value="รอดำเนินการ" ${item.status === 'รอดำเนินการ' ? 'selected' : ''}>รอดำเนินการ</option>
+                                <option value="กำลังดำเนินการ" ${item.status === 'กำลังดำเนินการ' ? 'selected' : ''}>กำลังดำเนินการ</option>
+                                <option value="เสร็จสิ้น" ${item.status === 'เสร็จสิ้น' ? 'selected' : ''}>เสร็จสิ้น</option>
+                            </select>
+                        </td>
+                    </tr>
+                `;
+            }).join('');
         }
 
-        // Tab Switching Logic
+        function changeItemStatus(id, newStatus) {
+            const item = workData.find(i => i.id === id);
+            if (item) {
+                item.status = newStatus;
+                saveData();
+                renderList();
+                
+                // อัปเดตกราฟ
+                const doneByProvince = rawProvinces.map(prov => {
+                    return workData.filter(i => i.province === prov && i.status === 'เสร็จสิ้น').length;
+                });
+                barChart.data.datasets[1].data = doneByProvince;
+                barChart.update();
+            }
+        }
+
         function switchTab(tab) {
             const pDash = document.getElementById('page-dashboard');
             const pList = document.getElementById('page-list');
@@ -530,21 +695,12 @@
             }
         }
 
-        // Placeholder Functions for Buttons
-        function updateStatus(id) {
-            alert(`อัปเดตสถานะสำหรับรายการที่ ${id}`);
-        }
-
-        function viewReport(id) {
-            alert(`ดูรายงานสำหรับรายการที่ ${id}`);
-        }
-
-        // Initial Executions
         window.onload = function() {
             initData();
             renderSummaryTable();
             initCharts();
             renderList();
+            updateKPICards();
         };
     </script>
 </body>
